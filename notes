@@ -1,0 +1,54 @@
+SELECT T_UserCar.user_id, T_UserCar.user_car_id, T_PairCarApp.user_car_id FROM T_UserCar LEFT JOIN T_PairCarApp ON T_UserCar.user_car_id = T_PairCarApp.user_car_id
+
+
+
+SELECT created_date ,DATE_ADD(created_date, INTERVAL 2 HOUR)
+FROM T_User 
+
+
+SELECT TIME('2016-12-27 11:52:29')
+
+
+
+http://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html
+
+http://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_timediff
+
+SELECT created_date ,DATE_ADD(TIME(created_date), INTERVAL 2 HOUR)
+FROM T_User 
+
+select T_UserCar.user_id from T_UserCar left join T_PairCarApp on T_PairCarApp.user_id = T_UserCar.user_id
+
+http://www.mysqltutorial.org/mysql-left-join.aspx
+
+
+select T_UserCar.user_id,T_User.user_id,T_User.access_token from T_UserCar left join T_PairCarApp on T_PairCarApp.user_id = T_UserCar.user_id left join T_User on T_User.user_id = T_UserCar.user_id where T_UserCar.user_car_id = 2
+
+
+
+select T_UserNotification.user_id,T_User.user_id,T_User.access_token from T_UserNotification 
+
+left join T_User on T_UserNotification.user_id = T_UserNotification.user_id 
+
+where T_UserNotification.user_notification_id = 1 AND access_token=
+
+
+
+select T_User.user_id,T_User.access_token from T_UserLocation 
+
+left join T_User on T_UserLocation.user_id = T_User.user_id 
+
+where T_UserLocation.user_id = 1
+
+
+"Deleted Database"
+
+(cubetboard_cano
+medical_db_cano)
+
+
+SELECT TIMEDIFF(T_User.`created_date`,UTC_DATE()) FROM T_User where user_id = 2
+
+SELECT TIMEDIFF(now(),T_User.`created_date`) FROM T_User where user_id = 2
+
+SELECT Hour(TIMEDIFF(now(),T_User.`created_date`)) FROM T_User where user_id = 2
