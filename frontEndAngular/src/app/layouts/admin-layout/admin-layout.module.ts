@@ -4,13 +4,19 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminLayoutRoutes } from './admin-layout.routing';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
+import { UserManagementComponent } from 'app/user-management/user-management.component';
 import { UserProfileComponent } from '../../user-profile/user-profile.component';
 import { TableListComponent } from '../../table-list/table-list.component';
 import { TypographyComponent } from '../../typography/typography.component';
 import { IconsComponent } from '../../icons/icons.component';
 import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
-import { UpgradeComponent } from '../../upgrade/upgrade.component';
+import { EmailManagementComponent } from '../../email-management/email-management.component';
+import { TrekManagementComponent } from '../../trek-management/trek-management.component';
+import { MembershipManagementComponent } from '../../membership-management/membership-management.component';
+import { SettingsComponent } from '../../settings/settings.component';
+import { AdduserComponent } from '../../user-management/adduser/adduser.component';
+import { EdituserComponent } from '../../user-management/edituser/edituser.component';
 
 import {
   MatButtonModule,
@@ -18,8 +24,12 @@ import {
   MatRippleModule,
   MatFormFieldModule,
   MatTooltipModule,
-  MatSelectModule
+  MatSelectModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatPaginatorModule
 } from '@angular/material';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -32,17 +42,29 @@ import {
     MatInputModule,
     MatSelectModule,
     MatTooltipModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatPaginatorModule    
+  ],
+  providers: [
+    MatDatepickerModule,
   ],
   declarations: [
     DashboardComponent,
+    UserManagementComponent,
     UserProfileComponent,
     TableListComponent,
     TypographyComponent,
     IconsComponent,
     MapsComponent,
     NotificationsComponent,
-    UpgradeComponent,
+    EmailManagementComponent,
+    TrekManagementComponent,
+    MembershipManagementComponent,
+    SettingsComponent,
+    AdduserComponent,
+    EdituserComponent
   ]
 })
 
-export class AdminLayoutModule {}
+export class AdminLayoutModule { }
