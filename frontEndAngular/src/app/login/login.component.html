@@ -1,0 +1,26 @@
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+    <div class="row">
+      <!-- Icon -->
+      <div class="logo-img col-md-3">
+        <img style="margin: 10px 8px 10px 95px;" src="/assets/img/icon_logo.png" />
+      </div>
+      <div class="fadeIn first col-md-6">
+        <h2>Plan The Unplanned Admin Portal</h2>
+      </div>
+    </div>
+    <!-- Login Form -->
+    <form>
+      <input type="text" id="login" class="fadeIn second" name="login" placeholder="Login" [(ngModel)]="username">
+      <input type="password" id="password" class="fadeIn third" name="login" placeholder="Password" [(ngModel)]="password">
+      <input type="submit" class="fadeIn fourth" value="Log In" (click)="login()">
+    </form>
+
+    <!-- Remind Passowrd -->
+    <div id="formFooter">
+      <a class="underlineHover" href="#">Forgot Password?</a>
+    </div>
+
+  </div>
+</div>
