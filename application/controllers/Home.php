@@ -93,4 +93,34 @@ class Home extends CI_Controller
 
         echo json_encode($return_data);
     }
+
+    public function getUsers()
+    {
+        $result = $this->homemodel->getUsers();
+        echo json_encode($result);
+    }
+
+    public function addUser()
+    {
+        $post = json_decode(file_get_contents("php://input"), true);
+        $data = $post["data"];
+        $this->db->insert('wp_users', $data);
+        $this->db->insert_id();
+        echo json_encode('Success');
+    }
+
+    public function deletUser()
+    {
+       //Write logic to delete
+    }
+
+    public function editUser()
+    {
+       //write logic to edit
+    }
+
+    public function searchUser()
+    {
+        echo json_encode($return_data);
+    }
 }

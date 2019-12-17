@@ -46,4 +46,27 @@ class Homemodel extends CI_Model
             return "NO_USER_FOUND";
         }
     }
+
+    public function getUsers()
+    {
+        $query = $this->db->query("SELECT * from wp_users LIMIT 0,10");
+        return $query->result();
+    }
+
+    public function addUser($data){
+        $this->db->insert('wp_users', $data);
+        return $this->db->insert_id();
+    }
+
+    public function deletUser($id){
+
+    }
+
+    public function editUser($data){
+
+    }
+
+    public function searchUser($data){
+
+    }
 }

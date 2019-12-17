@@ -8,7 +8,6 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class AdminserviceService {
-
   postData;
 
   constructor(private router: Router, private http: HttpClient) { }
@@ -30,4 +29,14 @@ export class AdminserviceService {
     );
   }
 
+  getUsers() {
+    return this.http.get(environment.apiTarget + `/home/getUsers`);
+  }
+
+  searchUser(filterUi, searchUi) {
+    this.postData = {
+      filterUi: searchUi
+    }
+    return this.http.post(environment.apiTarget + `/home/searchUser`, this.postData);
+  }
 }
