@@ -31,9 +31,7 @@ class Homemodel extends CI_Model
         $this->db->from('wp_users');
         $this->db->where('user_login', $username);
         $result = $this->db->get();
-
         $numrows = $result->num_rows();
-
         if ($numrows == 1) {
             return $username;
             $row = $result->row();
@@ -53,20 +51,21 @@ class Homemodel extends CI_Model
         return $query->result();
     }
 
-    public function addUser($data){
+    public function addUser($data)
+    {
         $this->db->insert('wp_users', $data);
         return $this->db->insert_id();
     }
 
-    public function deletUser($id){
-
+    public function deletUser($id)
+    {
     }
 
-    public function editUser($data){
-
+    public function editUser($data)
+    {
     }
 
-    public function searchUser($data){
-
+    public function searchUser($data)
+    {
     }
 }

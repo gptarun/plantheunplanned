@@ -60,7 +60,9 @@ $route['translate_uri_dashes'] = TRUE;
 */
 
 // $route['api/example/users/(:num)'] = 'api/example/users/id/$1'; // Example 4
-// $route['api/example/users/users_get(:num)'] = 'api/example/users/id/$1'; // Example 4
+// $route['example/users/users/(:num)'] = 'api/example/users/id/$1'; // Example 4
 
 // $route['api/example/users/(:num)(\.)([a-zA-Z0-9_-]+)(.*)'] = 'api/example/users/id/$1/format/$3$4'; // Example 8
-$route['api/user/'] = 'api/user/'; // Example 4
+// $route['api/user/'] = 'api/user/'; // Example 4
+// $route['email/(:any)'] = 'email/$1';
+// $route['email/(:any)'] = 'Email/$1';

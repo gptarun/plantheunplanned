@@ -1,18 +1,16 @@
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { RouterModule } from '@angular/router';
-import { AppRoutingModule } from './app.routing';
-import { ComponentsModule } from './components/components.module';
-import { HttpClientModule } from '@angular/common/http';
-import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { HttpModule } from "@angular/http";
+import { RouterModule } from "@angular/router";
+import { AppRoutingModule } from "./app.routing";
+import { ComponentsModule } from "./components/components.module";
+import { HttpClientModule } from "@angular/common/http";
+import { AppComponent } from "./app.component";
 
-import {
-  AgmCoreModule
-} from '@agm/core';
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { LoginComponent } from './login/login.component';
+import { AgmCoreModule } from "@agm/core";
+import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.component";
+import { LoginComponent } from "./login/login.component";
 
 @NgModule({
   imports: [
@@ -25,15 +23,11 @@ import { LoginComponent } from './login/login.component';
     RouterModule,
     AppRoutingModule,
     AgmCoreModule.forRoot({
-      apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
+      apiKey: "YOUR_GOOGLE_MAPS_API_KEY"
     })
   ],
-  declarations: [
-    AppComponent,
-    AdminLayoutComponent,
-    LoginComponent
-  ],
+  declarations: [AppComponent, AdminLayoutComponent, LoginComponent],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
