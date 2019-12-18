@@ -29,4 +29,10 @@ export class UserManagementComponent implements OnInit {
     );
   }
 
+  clearFilter() {
+    this.adminservice.getUsers().subscribe((responseData: any[]) => {
+      this.userList = responseData;
+    }
+    );
+  }
 }

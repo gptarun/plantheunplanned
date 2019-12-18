@@ -121,6 +121,12 @@ class Home extends CI_Controller
 
     public function searchUser()
     {
-        echo json_encode($return_data);
+        $post = json_decode(file_get_contents("php://input"), true);
+        $filter = $post["filter"];
+        $search = $post["search"];
+
+        $result = $this->homemodel->searchUser($filter, $search);
+
+        echo json_encode($result);
     }
 }

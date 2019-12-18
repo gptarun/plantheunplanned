@@ -53,20 +53,24 @@ class Homemodel extends CI_Model
         return $query->result();
     }
 
-    public function addUser($data){
+    public function addUser($data)
+    {
         $this->db->insert('wp_users', $data);
         return $this->db->insert_id();
     }
 
-    public function deletUser($id){
-
+    public function deletUser($id)
+    {
     }
 
-    public function editUser($data){
-
+    public function editUser($data)
+    {
     }
 
-    public function searchUser($data){
+    public function searchUser($filter, $search)
+    {
+        // return $this->db->get_where('wp_users', array($filter => $search))->result();
 
+        return $this->db->select('*')->from('wp_users')->where($filter . " LIKE '%$search%'")->get()->result_array();
     }
 }
