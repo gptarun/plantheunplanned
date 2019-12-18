@@ -65,7 +65,15 @@ class Homemodel extends CI_Model
     {
     }
 
+<<<<<<< HEAD
     public function searchUser($data)
     {
+=======
+    public function searchUser($filter, $search)
+    {
+        // return $this->db->get_where('wp_users', array($filter => $search))->result();
+
+        return $this->db->select('*')->from('wp_users')->where($filter . " LIKE '%$search%'")->get()->result_array();
+>>>>>>> ec1805f5193bb40b50d33030ee62a1a5104e54be
     }
 }

@@ -122,7 +122,13 @@ class Home extends CI_Controller
 
     public function searchUser()
     {
-        echo "asd";
+        $post = json_decode(file_get_contents("php://input"), true);
+        $filter = $post["filter"];
+        $search = $post["search"];
+
+        $result = $this->homemodel->searchUser($filter, $search);
+
+        echo json_encode($result);
     }
 
 
@@ -138,8 +144,8 @@ class Home extends CI_Controller
         $config['protocol'] = 'smtp';
         $config['smtp_host'] = 'mail.shraddhaprinters.com'; //change this
         // $config['smtp_port'] = '465';
-        $config['smtp_user'] = 'shraddha'; //change this
-        $config['smtp_pass'] = '@@rishabh#54321'; //change this
+        $config['smtp_user'] = 'shraddhaprinters'; //change this
+        $config['smtp_pass'] = '@@#54321'; //change this
         $config['mailtype'] = 'html';
         $config['charset'] = 'iso-8859-1';
         $config['wordwrap'] = TRUE;

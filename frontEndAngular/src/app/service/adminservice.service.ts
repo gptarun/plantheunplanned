@@ -35,7 +35,8 @@ export class AdminserviceService {
 
   searchUser(filterUi, searchUi) {
     this.postData = {
-      filterUi: searchUi
+      filter: filterUi,
+      search: searchUi
     }
     return this.http.post(environment.apiTarget + `/home/searchUser`, this.postData);
   }
