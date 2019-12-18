@@ -5,17 +5,17 @@
         <div class="col-md-3">
           <mat-form-field>
             <mat-label>Select</mat-label>
-            <mat-select [(value)]="selected">
+            <mat-select [(value)]="selected" [(ngModel)]="selectFilter">
               <mat-option>None</mat-option>
-              <mat-option value="option1">Email</mat-option>
-              <mat-option value="option2">Name</mat-option>
-              <mat-option value="option3">Mobile No</mat-option>
+              <mat-option value="user_email">Email</mat-option>
+              <mat-option value="user_nicename">Name</mat-option>
+              <mat-option value="user_mobile">Mobile No</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
         <div class="col-md-3">
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Enter your value">
+            <input matInput placeholder="Enter your value" [(ngModel)]="searchValue">
           </mat-form-field>
         </div>
         <div class="col-md-3">
@@ -25,7 +25,7 @@
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </div>
-        <button mat-raised-button type="submit" class="btn btn-info pull-right">Search</button>
+        <button mat-raised-button type="submit" class="btn btn-info pull-right" (click)="searchUser()">Search</button>
         <button mat-raised-button type="submit" class="btn pull-right">Clear</button>
       </div>
     </div>
@@ -80,8 +80,8 @@
                         </div>
                       </div>
                     </td>
-                    <td>{{item.name}}</td>
-                    <td>{{item.email}}</td>
+                    <td>{{item.user_nicename}}</td>
+                    <td>{{item.user_email}}</td>
                     <td>{{item.mobile}}</td>
                     <td>{{item.membershipDate}}</td>
                     <td>{{item.membershipType}}</td>
