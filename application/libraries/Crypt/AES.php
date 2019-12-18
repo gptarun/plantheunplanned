@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Pure-PHP implementation of AES.
  *
@@ -45,7 +46,9 @@
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
  * @link      http://phpseclib.sourceforge.net
  */
+
 namespace phpseclib\Crypt;
+
 /**
  * Pure-PHP implementation of AES.
  *
@@ -115,5 +118,5 @@ class AES extends Rijndael
         parent::setKey($key);
     }
 }
-Contact GitHub API Training Shop Blog About
-© 2016 GitHub, Inc. Terms Privacy Security Status Help
+// Contact GitHub API Training Shop Blog About
+// © 2016 GitHub, Inc. Terms Privacy Security Status Help

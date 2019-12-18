@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 |--------------------------------------------------------------------------
@@ -44,14 +44,14 @@ $config['rest_default_format'] = 'json';
 |
 */
 $config['rest_supported_formats'] = [
-    'json',
-    'array',
-    'csv',
-    'html',
-    'jsonp',
-    'php',
-    'serialized',
-    'xml',
+  'json',
+  'array',
+  'csv',
+  'html',
+  'jsonp',
+  'php',
+  'serialized',
+  'xml',
 ];
 
 /*
@@ -184,7 +184,7 @@ $config['auth_library_function'] = '';
 
 
 // ---Uncomment list line for the wildard unit test
- //$config['auth_override_class_method']['wildcard_test_cases']['*'] = 'basic';
+//$config['auth_override_class_method']['wildcard_test_cases']['*'] = 'basic';
 
 /*
 |--------------------------------------------------------------------------
@@ -209,7 +209,7 @@ $config['auth_library_function'] = '';
 | Array of usernames and passwords for login, if ldap is configured this is ignored
 |
 */
-$config['rest_valid_logins'] = ['admin' => '123'];
+$config['rest_valid_logins'] = ['' => ''];
 
 /*
 |--------------------------------------------------------------------------
