@@ -13,26 +13,74 @@ export class UserManagementComponent implements OnInit {
   userList = [];
   selectFilter = '';
   searchValue = '';
-  dateValue = '';
+  dateValue = new Date('');
+  previousPageIndex = 0;
+  pageIndex = 0;
+  pageSize = 10;
+  length = 0;
+  postData = {};
 
   ngOnInit() {
-    this.adminservice.getUsers().subscribe((responseData: any[]) => {
-      this.userList = responseData;
+    this.postData = {
+      offset: this.pageIndex,
+      limit: this.pageSize,
+      filter: this.selectFilter,
+      search: this.searchValue,
+      date: ''
     }
-    );
+    this.callUserApi(this.postData);
   }
 
   searchUser() {
-    this.adminservice.searchUser(this.selectFilter, this.searchValue).subscribe((responseData: any[]) => {
-      this.userList = responseData;
+
+    this.dateValue.setDate(this.dateValue.getDate() + 1);
+
+    this.postData = {
+      offset: this.pageIndex,
+      limit: this.pageSize,
+      filter: this.selectFilter,
+      search: this.searchValue,
+      date: this.dateValue
     }
-    );
+    this.callUserApi(this.postData);
   }
 
   clearFilter() {
-    this.adminservice.getUsers().subscribe((responseData: any[]) => {
+    this.selectFilter = '';
+    this.searchValue = '';
+    this.dateValue = new Date('');
+    this.postData = {
+      offset: this.pageIndex,
+      limit: this.pageSize,
+      filter: this.selectFilter,
+      search: this.searchValue,
+      date: ''
+    }
+    this.callUserApi(this.postData);
+  }
+
+  setPaginaton(event) {
+    this.postData = {
+      offset: event.pageIndex,
+      limit: event.pageSize,
+      filter: this.selectFilter,
+      search: this.searchValue,
+      date: this.dateValue
+    }
+    this.callUserApi(this.postData);
+  }
+
+  callUserApi(postData) {
+
+    this.adminservice.getUsersCount(postData).subscribe((responseData: any[]) => {
+      this.length = responseData[0].total;
+    }
+    );
+
+    this.adminservice.getUsers(postData).subscribe((responseData: any[]) => {
       this.userList = responseData;
     }
     );
+
   }
 }

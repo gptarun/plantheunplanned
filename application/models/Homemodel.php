@@ -45,11 +45,6 @@ class Homemodel extends CI_Model
         }
     }
 
-    public function getUsers()
-    {
-        $query = $this->db->query("SELECT * from wp_users LIMIT 0,10");
-        return $query->result();
-    }
 
     public function addUser($data)
     {
@@ -65,15 +60,40 @@ class Homemodel extends CI_Model
     {
     }
 
-<<<<<<< HEAD
-    public function searchUser($data)
+    public function searchUser($offset, $limit, $filter, $search, $date)
     {
-=======
-    public function searchUser($filter, $search)
+        // return $this->db->get_where('wp_users', array($filter => $search))->result();        
+        if ($filter == '' ||  $search == '') {
+            if ($date != '') {
+                return $this->db->select('*')->from('wp_users')->where("user_registered LIKE '%$date%'")->limit($limit, $offset)->get()->result_array();
+            } else {
+                return $this->db->select('*')->from('wp_users')->limit($limit, $offset)->get()->result_array();
+            }
+        } else if ($filter != '' &&  $search != '') {
+            if ($date != '') {
+                return $this->db->select('*')->from('wp_users')->where($filter . " LIKE '%$search%' AND user_registered LIKE '%$date%'")->limit($limit, $offset)->get()->result_array();
+            } else {                                        
+                return $this->db->select('*')->from('wp_users')->where($filter . " LIKE '%$search%'")->limit($limit, $offset)->get()->result_array();
+            }
+        }
+    }
+
+
+    public function searchUserCount($filter, $search, $date)
     {
         // return $this->db->get_where('wp_users', array($filter => $search))->result();
-
-        return $this->db->select('*')->from('wp_users')->where($filter . " LIKE '%$search%'")->get()->result_array();
->>>>>>> ec1805f5193bb40b50d33030ee62a1a5104e54be
+        if ($filter == '' ||  $search == '') {
+            if ($date != '') {
+                return $this->db->select('count(*) as total')->from('wp_users')->where("user_registered LIKE '%$date%'")->get()->result_array();
+            } else {
+                return $this->db->select('count(*) as total')->from('wp_users')->get()->result_array();
+            }
+        } else if ($filter != '' &&  $search != '') {
+            if ($date != '') {
+                return $this->db->select('count(*) as total')->from('wp_users')->where($filter . " LIKE '%$search%' AND user_registered LIKE '%$date%")->get()->result_array();
+            } else {
+                return $this->db->select('count(*) as total')->from('wp_users')->where($filter . " LIKE '%$search%'")->get()->result_array();
+            }
+        }
     }
 }

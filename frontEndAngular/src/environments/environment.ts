@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  apiTarget: "http://localhost/plantheunplanned/index.php"
+  apiTarget: "http://localhost/code/code_api/index.php"
 };
