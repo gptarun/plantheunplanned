@@ -29,15 +29,11 @@ export class AdminserviceService {
     );
   }
 
-  getUsers() {
-    return this.http.get(environment.apiTarget + `/home/getUsers`);
+  getUsers(data) {
+    return this.http.post(environment.apiTarget + `/home/searchUser`, data);
   }
 
-  searchUser(filterUi, searchUi) {
-    this.postData = {
-      filter: filterUi,
-      search: searchUi
-    }
-    return this.http.post(environment.apiTarget + `/home/searchUser`, this.postData);
+  getUsersCount(data) {
+    return this.http.post(environment.apiTarget + `/home/searchUserCount`, data);
   }
 }

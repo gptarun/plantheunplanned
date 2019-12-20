@@ -95,12 +95,6 @@ class Home extends CI_Controller
         echo json_encode($return_data);
     }
 
-    public function getUsers()
-    {
-        $result = $this->homemodel->getUsers();
-        echo json_encode($result);
-    }
-
     public function addUser()
     {
         $post = json_decode(file_get_contents("php://input"), true);
@@ -123,15 +117,28 @@ class Home extends CI_Controller
     public function searchUser()
     {
         $post = json_decode(file_get_contents("php://input"), true);
+        $offset = $post["offset"];
+        $limit = $post["limit"];
         $filter = $post["filter"];
         $search = $post["search"];
-
-        $result = $this->homemodel->searchUser($filter, $search);
+        $date = $post["date"];
+        $date = substr($date, 0, 10);
+        $result = $this->homemodel->searchUser($offset, $limit, $filter, $search, $date);
 
         echo json_encode($result);
     }
 
+    public function searchUserCount()
+    {
+        $post = json_decode(file_get_contents("php://input"), true);
+        $filter = $post["filter"];
+        $search = $post["search"];
+        $date = $post["date"];
+        $date = substr($date, 0, 10);
+        $result = $this->homemodel->searchUserCount($filter, $search, $date);
 
+        echo json_encode($result);
+    }
 
 
 
