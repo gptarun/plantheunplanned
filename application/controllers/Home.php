@@ -147,21 +147,6 @@ class Home extends CI_Controller
 
     public function send_email()
     {
-        // echo "hello";
-        $from_email = "shraddhaprinters009@gmail.com";
-        // $to_email = $to;Email verification link has been sent to your email, please check your email.
-
-        $config['protocol'] = 'smtp';
-        $config['smtp_host'] = 'mail.shraddhaprinters.com'; //change this
-        // $config['smtp_port'] = '465';
-        $config['smtp_user'] = 'shraddhaprinters'; //change this
-        $config['smtp_pass'] = '@@#54321'; //change this
-        $config['mailtype'] = 'html';
-        $config['charset'] = 'iso-8859-1';
-        $config['wordwrap'] = TRUE;
-        $config['newline'] = "\r\n"; //use double quotes to comply with RFC 822 standard
-        //Load email library 
-        $this->load->library('email', $config);
 
         $this->email->from($from_email, 'shraddhaprinters');
         $this->email->to('rishabh virani here');
