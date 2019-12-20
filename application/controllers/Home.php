@@ -140,7 +140,10 @@ class Home extends CI_Controller
         echo json_encode($result);
     }
 
-
+    public function getTrekLeaders(){
+        $result = $this->homemodel->getTrekLeaders();
+        echo json_encode($result);
+    }
 
     public function send_email()
     {

@@ -36,4 +36,8 @@ export class AdminserviceService {
   getUsersCount(data) {
     return this.http.post(environment.apiTarget + `/home/searchUserCount`, data);
   }
+
+  getTrekLeaders() {
+    return this.http.get(environment.apiTarget + `/home/getTrekLeaders`);
+  }
 }

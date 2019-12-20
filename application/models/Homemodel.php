@@ -72,7 +72,7 @@ class Homemodel extends CI_Model
         } else if ($filter != '' &&  $search != '') {
             if ($date != '') {
                 return $this->db->select('*')->from('wp_users')->where($filter . " LIKE '%$search%' AND user_registered LIKE '%$date%'")->limit($limit, $offset)->get()->result_array();
-            } else {                                        
+            } else {
                 return $this->db->select('*')->from('wp_users')->where($filter . " LIKE '%$search%'")->limit($limit, $offset)->get()->result_array();
             }
         }
@@ -95,5 +95,10 @@ class Homemodel extends CI_Model
                 return $this->db->select('count(*) as total')->from('wp_users')->where($filter . " LIKE '%$search%'")->get()->result_array();
             }
         }
+    }
+
+    public function getTrekLeaders()
+    {
+        return $this->db->select('leader_id, name')->from('trek_leader')->get()->result_array();
     }
 }

@@ -27,7 +27,8 @@ import {
   MatSelectModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatAutocompleteModule
 } from '@angular/material';
 
 @NgModule({
@@ -44,7 +45,8 @@ import {
     MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatPaginatorModule    
+    MatPaginatorModule,
+    MatAutocompleteModule
   ],
   providers: [
     MatDatepickerModule,
