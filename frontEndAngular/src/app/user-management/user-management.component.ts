@@ -71,7 +71,7 @@ export class UserManagementComponent implements OnInit {
   }
 
   callUserApi(postData) {
-
+    postData.offset = postData.offset * postData.limit;
     this.adminservice.getUsersCount(postData).subscribe((responseData: any[]) => {
       this.length = responseData[0].total;
     }

@@ -5,27 +5,27 @@
         <div class="col-md-3">
           <mat-form-field>
             <mat-label>Select</mat-label>
-            <mat-select [(value)]="selected">
+            <mat-select [(value)]="selected" [(ngModel)]="selectFilter">
               <mat-option>None</mat-option>
-              <mat-option value="option1">Trek Name</mat-option>
-              <mat-option value="option2">Trek ID</mat-option>
+              <mat-option value="user_email">Email</mat-option>
+              <mat-option value="user_nicename">Name</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
         <div class="col-md-3">
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Enter your value">
+            <input matInput placeholder="Enter your value" [(ngModel)]="searchValue">
           </mat-form-field>
         </div>
         <div class="col-md-3">
           <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="dateValue">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </div>
-        <button mat-raised-button type="submit" class="btn btn-info pull-right">Search</button>
-        <button mat-raised-button type="submit" class="btn pull-right">Clear</button>
+        <button mat-raised-button type="submit" class="btn btn-info pull-right" (click)="searchUser()">Search</button>
+        <button mat-raised-button type="submit" class="btn pull-right" (click)="clearFilter()">Clear</button>
       </div>
     </div>
     <div class="row">
@@ -38,21 +38,7 @@
             <div class="table-responsive">
               <table class="table">
                 <thead class=" text-primary">
-                  <th>
-                    <div class="row">
-                      <div class="col-md-5">
-                        ID
-                      </div>
-                      <div class="form-check col-md-4">
-                        <label class="form-check-label">
-                          <input class="form-check-input" type="checkbox" value="" checked>
-                          <span class="form-check-sign">
-                            <span class="check"></span>
-                          </span>
-                        </label>
-                      </div>
-                    </div>
-                  </th>
+                  <th>ID</th>
                   <th>Name</th>
                   <th>Email</th>
                   <th>Mobile</th>
@@ -61,16 +47,17 @@
                   <th>Trek Date</th>
                   <th>Boarding Point</th>
                 </thead>
-                <tbody>
+                <tbody *ngFor="let item of userList">
                   <tr>
                     <td>
                       <div class="row">
                         <div class="col-md-4">
-                          1
+                          {{item.ID}}
                         </div>
                         <div class="form-check col-md-4">
                           <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked>
+                            <input class="form-check-input" type="checkbox" name="user" value="item.id"
+                              (change)="checkUser($event)">
                             <span class="form-check-sign">
                               <span class="check"></span>
                             </span>
@@ -78,52 +65,19 @@
                         </div>
                       </div>
                     </td>
-                    <td>
-                      Dakota Rice
-                    </td>
-                    <td>
-                      Niger
-                    </td>
-                    <td>
-                      Oud-Turnhout
-                    </td>
-                    <td class="text-primary">
-                      $36,738
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="row">
-                        <div class="col-md-4">
-                          2
-                        </div>
-                        <div class="form-check col-md-4">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked>
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      Minerva Hooper
-                    </td>
-                    <td>
-                      Curaçao
-                    </td>
-                    <td>
-                      Sinaai-Waas
-                    </td>
-                    <td class="text-primary">
-                      $23,789
-                    </td>
+                    <td>{{item.user_nicename}}</td>
+                    <td>{{item.user_email}}</td>
+                    <td>{{item.mobile}}</td>
+                    <td>{{item.membershipDate}}</td>
+                    <td>{{item.membershipType}}</td>
+                    <td>{{item.membershipType}}</td>
+                    <td>{{item.membershipType}}</td>
                   </tr>
                 </tbody>
               </table>
 
-              <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+              <mat-paginator [length]="length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
+                (page)="pageEvent = setPaginaton($event)">
               </mat-paginator>
             </div>
           </div>
@@ -159,13 +113,6 @@
                     </mat-option>
                   </mat-autocomplete>
                 </mat-form-field>
-                <!-- <mat-form-field>
-                  <mat-label>Select Trek Leaders</mat-label>
-                  <mat-select>
-                    <mat-option>None</mat-option>
-                    <mat-option *ngFor="let leader of trekLeaders" value="leader.id">{{leader.name}}</mat-option>
-                  </mat-select>
-                </mat-form-field> -->
               </div>
             </div>
             <div>
