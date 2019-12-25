@@ -148,10 +148,10 @@ class Home extends CI_Controller
     public function send_email()
     {
 
-        $this->email->from($from_email, 'shraddhaprinters');
-        $this->email->to('rishabh virani here');
-        $this->email->subject('Mail permo dharm');
-        $this->email->message('Jai ram ji ki');
+        // $this->email->from($from_email, 'shraddhaprinters');
+        // $this->email->to('rishabh virani here');
+        // $this->email->subject('Mail permo dharm');
+        // $this->email->message('Jai ram ji ki');
 
         //Send mail 
         return $this->email->send();

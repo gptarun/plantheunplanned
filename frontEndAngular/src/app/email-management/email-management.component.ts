@@ -122,12 +122,7 @@ export class EmailManagementComponent implements OnInit {
     );
 
     this.adminservice.getUsers(postData).subscribe((responseData: any[]) => {
-      this.userList = responseData;
-      this.userList.forEach(element => {
-        var userid = element['ID'];
-        this.checkListId.push(userid);
-      })
-      console.log(this.checkListId);
+      this.userList = responseData;   
     }
     );
 
