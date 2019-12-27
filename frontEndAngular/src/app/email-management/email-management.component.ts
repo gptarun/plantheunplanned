@@ -11,8 +11,15 @@ import { Key, element } from 'protractor';
   styleUrls: ['./email-management.component.scss']
 })
 export class EmailManagementComponent implements OnInit {
+  //Trek listing autocomplete
+  trekValue = "";
+  myTrekControl = new FormControl();
+  trekOptions: any[] = [];
+  filteredTrekOptions: Observable<any[]>;
+
+
+  //Trek Leader autocomplete
   leaderValue = "";
-  showDropdown = false;
   myControl = new FormControl();
   options: any[] = [];
   filteredOptions: Observable<any[]>;
@@ -31,12 +38,13 @@ export class EmailManagementComponent implements OnInit {
   checkAllUser: boolean = false;
   checkListId = [];
 
+  trekList = [];
+
   constructor(private adminservice: AdminserviceService) { }
 
   ngOnInit() {
     this.adminservice.getTrekLeaders().subscribe((responseData: any[]) => {
       this.options = responseData;
-
       this.filteredOptions = this.myControl.valueChanges
         .pipe(
           startWith(''),
@@ -66,6 +74,18 @@ export class EmailManagementComponent implements OnInit {
   private _filter(name: string): any[] {
     const filterValue = name.toLowerCase();
     return this.options.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+  //These will be use for auto complete dropdown in Front end -> Trek Leader list
+  displayFnTrek(trek?: any): string | undefined {
+    console.log(trek);
+    return trek ? trek.post_title : undefined;
+  }
+
+  //These will be use for auto complete dropdown in Front end -> Trek Leader list
+  private _filterTrek(post_title: string): any[] {
+    const filterValue = post_title.toLowerCase();
+    return this.trekOptions.filter(trekOptions => trekOptions.post_title.toLowerCase().indexOf(filterValue) === 0);
   }
 
   //Check & Uncheck user
@@ -98,6 +118,8 @@ export class EmailManagementComponent implements OnInit {
       search: this.searchValue,
       date: ''
     }
+    this.trekValue = '';
+    this.trekOptions = [];
     this.callUserApi(this.postData);
   }
 
@@ -112,6 +134,25 @@ export class EmailManagementComponent implements OnInit {
     }
     this.callUserApi(this.postData);
   }
+
+  changeDate(eventDate) {
+
+    this.dateValue.setDate(eventDate.getDate() + 1);
+    this.postData = {
+      date: this.dateValue
+    }
+    this.adminservice.getTreksByDate(this.postData).subscribe((responseData: any[]) => {
+      this.trekOptions = responseData;
+      this.trekList = responseData;
+      this.filteredTrekOptions = this.myTrekControl.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => typeof value === 'string' ? value : value.post_title),
+          map(post_title => post_title ? this._filterTrek(post_title) : this.trekOptions.slice())
+        );
+    })
+  }
+
   //Calling API to get user list with pagination
   callUserApi(postData) {
     postData.offset = postData.offset * postData.limit;
@@ -122,7 +163,7 @@ export class EmailManagementComponent implements OnInit {
     );
 
     this.adminservice.getUsers(postData).subscribe((responseData: any[]) => {
-      this.userList = responseData;   
+      this.userList = responseData;
     }
     );
 

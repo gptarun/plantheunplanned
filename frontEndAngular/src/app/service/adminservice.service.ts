@@ -40,4 +40,7 @@ export class AdminserviceService {
   getTrekLeaders() {
     return this.http.get(environment.apiTarget + `/home/getTrekLeaders`);
   }
+  getTreksByDate(data){
+    return this.http.post(environment.apiTarget + `/home/getTreksByDate`, data);
+  }
 }

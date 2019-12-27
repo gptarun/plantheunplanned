@@ -56,7 +56,7 @@ if (!isset($_GET['code']) && !isset($_GET['provider'])) {
 exit;
 }
 
-require 'vendor/autoload.php';
+require 'C:/xampp/htdocs/code/code_api/vendor/autoload.php';
 
 session_start();
 
@@ -96,9 +96,8 @@ switch ($providerName) {
     case 'Google':
         $provider = new Google($params);
         $options = [
-            'scope' => [
-                'https://mail.google.com/'
-            ]
+            //'scope' => ['https://mail.google.com/']
+			'scope' => ['https://www.googleapis.com/auth/gmail.send']
         ];
         break;
     case 'Yahoo':

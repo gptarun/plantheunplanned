@@ -12,7 +12,8 @@
 	},
 	"require": {
 		"php": ">=5.2.4",
-		"phpmailer/phpmailer": "^6.1"
+		"phpmailer/phpmailer": "^6.1",
+		"league/oauth2-google": "^3.0"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
