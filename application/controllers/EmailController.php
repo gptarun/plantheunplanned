@@ -8,8 +8,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     header('Access-Control-Allow-Headers: Content-Type');
     exit;
 }
-define('GUSER', 'tarun@plantheunplanned.com');
-define('GPWD', 'infinitywar@$3');
+define('GUSER', 'sayhello@plantheunplanned.com');
+define('GPWD', 'infinitywar@#1');
+require 'C:/xampp/htdocs/code/code_api/vendor/autoload.php';
+
+use League\OAuth2\Client\Provider\Google;
+use PHPMailer\PHPMailer\OAuth;
 
 class EmailController extends CI_Controller
 {
@@ -26,19 +30,40 @@ class EmailController extends CI_Controller
 
 
         $mail->IsSMTP(); // enable SMTP
-        $mail->SMTPDebug = 2;  // debugging: 1 = errors and messages, 2 = messages only
+        $mail->SMTPDebug = 1;  // debugging: 1 = errors and messages, 2 = messages only
         $mail->SMTPAuth = true;  // authentication enabled
         $mail->AuthType = 'XOAUTH2';
-        $mail->oauthUserEmail = GUSER;
-        $mail->oauthClientId = '800130940633-1iuh9th4k15mdh505te3ct64sbp6ioue.apps.googleusercontent.com';
-        $mail->oauthClientSecret = '0EhyCqiCubbUOD4UkFXFPrmo';
-        //$mail->oauthRefreshToken = $token;
+
+        $email = GUSER;
+        $clientId = '800130940633-1iuh9th4k15mdh505te3ct64sbp6ioue.apps.googleusercontent.com';
+        $clientSecret = '0EhyCqiCubbUOD4UkFXFPrmo';
+        //Obtained by configuring and running get_oauth_token.php
+        //after setting up an app in Google Developer Console.
+        $refreshToken = '1//0gktP6aCWCGesCgYIARAAGBASNwF-L9IrLPn1LMqCl10pRSo-TqTO2xaWDGb-7zOVd8VljYgGZoqcpkxaTEhfMmiatL2gG_d4ZYY';
+        //Create a new OAuth2 provider instance
+        $provider = new Google(
+            [
+                'clientId' => $clientId,
+                'clientSecret' => $clientSecret,
+            ]
+        );
+        //Pass the OAuth provider instance to PHPMailer
+        $mail->setOAuth(
+            new OAuth(
+                [
+                    'provider' => $provider,
+                    'clientId' => $clientId,
+                    'clientSecret' => $clientSecret,
+                    'refreshToken' => $refreshToken,
+                    'userName' => $email,
+                ]
+            )
+        );
+
         $mail->SMTPSecure = 'tls'; // secure transfer enabled REQUIRED for GMail
         $mail->Host = 'smtp.gmail.com';
         $mail->Port = 587;
 
-        //$mail->Username = GUSER;
-        //$mail->Password = GPWD;
         $mail->SetFrom(GUSER, 'PlanTheUnplanned');
         $mail->Subject = 'Testing';
         $mail->Body = 'Testing Body';
@@ -59,35 +84,5 @@ class EmailController extends CI_Controller
             $error = 'Message sent!';
             return true;
         }
-        // $this->load->library('email');
-
-        // $this->email->set_newline("\r\n");
-
-        // $config['protocol'] = 'smtp';
-        // $config['smtp_host'] = 'smtp.gmail.com';
-        // $config['smtp_port'] = '587';
-        // $config['smtp_user'] = 'tarun@plantheunplanned.com';
-        // $config['smtp_from_name'] = 'Plan The Unplanned';
-        // $config['smtp_pass'] = 'infinitywar@$3';
-        // $config['wordwrap'] = TRUE;
-        // $config['newline'] = "\r\n";
-        // $config['mailtype'] = 'html';
-
-        // //$this->email->initialize($config);
-        // $this->load->library('email',$config);
-
-        // $this->email->from('tarun@plantheunplanned.com');
-        // $this->email->to('tarung1201@gmail.com');
-        // //$this->email->cc($attributes['cc']);
-        // //$this->email->bcc($attributes['cc']);
-        // $this->email->subject('Mail Testing');
-
-        // $this->email->message('Testing is done');
-
-        // if ($this->email->send()) {
-        //     return "Mail Sent";
-        // } else {
-        //     return "Failed";
-        // }
     }
 }

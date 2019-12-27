@@ -101,4 +101,10 @@ class Homemodel extends CI_Model
     {
         return $this->db->select('leader_id, name')->from('trek_leader')->get()->result_array();
     }
+
+
+    public function getTreksByDate($date)
+    {
+        return $this->db->select('*')->from('wp_posts')->where("post_type = 'product' AND post_modified_gmt LIKE '%$date%'")->get()->result_array();
+    }
 }

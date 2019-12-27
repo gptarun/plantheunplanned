@@ -140,8 +140,19 @@ class Home extends CI_Controller
         echo json_encode($result);
     }
 
-    public function getTrekLeaders(){
+    public function getTrekLeaders()
+    {
         $result = $this->homemodel->getTrekLeaders();
+        echo json_encode($result);
+    }
+
+    public function getTreksByDate()
+    {
+        $post = json_decode(file_get_contents("php://input"), true);
+        $date = $post["date"];
+        $date = substr($date, 0, 10);
+        $result = $this->homemodel->getTreksByDate($date);
+
         echo json_encode($result);
     }
 
