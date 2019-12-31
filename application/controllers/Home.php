@@ -156,6 +156,12 @@ class Home extends CI_Controller
         echo json_encode($result);
     }
 
+    public function getEmailTemplates()
+    {
+        $result = $this->homemodel->getEmailTemplates();
+        echo json_encode($result);
+    }
+
     public function send_email()
     {
 
@@ -166,5 +172,13 @@ class Home extends CI_Controller
 
         //Send mail 
         return $this->email->send();
+    }
+
+    public function getEmailText()
+    {
+        $post = json_decode(file_get_contents("php://input"), true);
+        $email_id = $post["emailId"];
+        $result = $this->homemodel->getEmailText($email_id);
+        echo json_encode($result);
     }
 }

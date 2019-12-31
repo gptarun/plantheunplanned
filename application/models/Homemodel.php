@@ -102,9 +102,18 @@ class Homemodel extends CI_Model
         return $this->db->select('leader_id, name')->from('trek_leader')->get()->result_array();
     }
 
+    public function getEmailTemplates()
+    {
+        return $this->db->select('email_id, email_name')->from('email_template')->get()->result_array();
+    }
 
     public function getTreksByDate($date)
     {
         return $this->db->select('*')->from('wp_posts')->where("post_type = 'product' AND post_modified_gmt LIKE '%$date%'")->get()->result_array();
+    }
+
+    public function getEmailText($email_id)
+    {
+        return $this->db->select('email_text')->from('email_template')->where("email_id = '$email_id'")->get()->result_array();
     }
 }

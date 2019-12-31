@@ -43,4 +43,10 @@ export class AdminserviceService {
   getTreksByDate(data){
     return this.http.post(environment.apiTarget + `/home/getTreksByDate`, data);
   }
+  getEmailTemplates(){
+    return this.http.get(environment.apiTarget + `/home/getEmailTemplates`);
+  }
+  getEmailText(postData){
+    return this.http.post(environment.apiTarget + `/home/getEmailText`, postData);
+  }
 }

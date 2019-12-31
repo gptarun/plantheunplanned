@@ -34,12 +34,11 @@ export class EmailManagementComponent implements OnInit {
   length = 0;
   postData = {};
 
-  isUser: boolean = false;
-  checkAllUser: boolean = false;
   checkListId = [];
 
   trekList = [];
-
+  emailList = [];
+  emailText = '';
   constructor(private adminservice: AdminserviceService) { }
 
   ngOnInit() {
@@ -53,6 +52,10 @@ export class EmailManagementComponent implements OnInit {
         );
     }
     );
+
+    this.adminservice.getEmailTemplates().subscribe((responseData: any[]) => {
+      this.emailList = responseData;
+    });
 
     this.postData = {
       offset: this.pageIndex,
@@ -89,8 +92,40 @@ export class EmailManagementComponent implements OnInit {
   }
 
   //Check & Uncheck user
-  checkUser(event) {
-    //logic to remove id from checklistid
+  checkUser(event, id) {
+    this.userList.forEach(element => {
+      if (id == element.ID) {
+        if (event.target.checked) {
+          this.checkListId.push(element.user_email);
+          element.selected = event.target.checked;
+        }
+        else {
+          var position = this.checkListId.indexOf(element.user_email);
+          if (position === -1) {
+            return null;
+          }
+          this.checkListId.splice(position, 1);
+          element.selected = event.target.checked;
+        }
+      }
+    });
+    console.log(this.checkListId);
+  }
+
+  checkUserAll($event) {
+    if ($event.target.checked) {
+      this.checkListId = [];
+      const checked = $event.target.checked;
+      console.log(checked);
+      this.userList.forEach(item => { item.selected = checked; this.checkListId.push(item.user_email); });
+
+    } else {
+      const checked = $event.target.checked;
+      console.log(checked);
+      this.userList.forEach(item => item.selected = checked);
+      this.checkListId = [];
+    }
+    console.log(this.checkListId);
   }
 
   searchUser() {
@@ -105,6 +140,16 @@ export class EmailManagementComponent implements OnInit {
       date: this.dateValue
     }
     this.callUserApi(this.postData);
+  }
+
+  selectEmail(event) {
+    console.log(event.value);
+    this.postData = {
+      emailId: event.value
+    }
+    this.adminservice.getEmailText(this.postData).subscribe((responseData: any[]) => {
+      this.emailText = responseData[0].email_text;
+    });
   }
 
   clearFilter() {
@@ -164,6 +209,9 @@ export class EmailManagementComponent implements OnInit {
 
     this.adminservice.getUsers(postData).subscribe((responseData: any[]) => {
       this.userList = responseData;
+      this.userList.forEach(element => {
+        element.selected = false;
+      });
     }
     );
 
