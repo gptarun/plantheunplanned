@@ -114,7 +114,7 @@
               <div class="col-md-3">
                 <mat-form-field>
                   <mat-label>Select Template</mat-label>
-                  <mat-select [(value)]="selected" (selectionChange)="selectEmail($event)">
+                  <mat-select [(value)]="selected" (selectionChange)="selectEmail($event)" [(ngModel)]="emailTemplate">
                     <mat-option>None</mat-option>
                     <mat-option [value]="email.email_id" *ngFor="let email of emailList">
                       {{email.email_name}}</mat-option>
@@ -124,7 +124,7 @@
               <div class=" col-md-3">
                 <mat-form-field class="example-full-width">
                   <input type="text" placeholder="Trek Leaders" aria-label="Trek Leaders" matInput
-                    [formControl]="myControl" [matAutocomplete]="auto">
+                    [formControl]="myControl" [matAutocomplete]="auto" [(ngModel)]="leaderValue">
                   <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
                     <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                       {{option.name}}
@@ -140,7 +140,8 @@
                 </mat-form-field>
               </div>
 
-              <button mat-raised-button type="submit" class="btn btn-info pull-right">Send</button>
+              <button mat-raised-button type="submit" class="btn btn-info pull-right"
+                [disabled]="emailText=='' || checkListId.length == 0" (click)="sendMail()">Send</button>
             </div>
           </div>
         </div>

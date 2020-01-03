@@ -99,7 +99,7 @@ class Homemodel extends CI_Model
 
     public function getTrekLeaders()
     {
-        return $this->db->select('leader_id, name')->from('trek_leader')->get()->result_array();
+        return $this->db->select('leader_id, name, email')->from('trek_leader')->get()->result_array();
     }
 
     public function getEmailTemplates()

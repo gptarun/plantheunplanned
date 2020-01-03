@@ -24,6 +24,12 @@ class EmailController extends CI_Controller
 
     public function send_email()
     {
+        $post = json_decode(file_get_contents("php://input"), true);
+        $users = $post["users"];
+        $emailBody = $post["emailBody"];
+        $leaderEmail = $post["leaderEmail"];
+
+        echo $users, $emailBody,  $leaderEmail;
 
         $this->load->library("phpmailer_library");
         $mail = $this->phpmailer_library->load();

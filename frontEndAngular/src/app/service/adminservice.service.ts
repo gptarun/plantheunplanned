@@ -40,13 +40,16 @@ export class AdminserviceService {
   getTrekLeaders() {
     return this.http.get(environment.apiTarget + `/home/getTrekLeaders`);
   }
-  getTreksByDate(data){
+  getTreksByDate(data) {
     return this.http.post(environment.apiTarget + `/home/getTreksByDate`, data);
   }
-  getEmailTemplates(){
+  getEmailTemplates() {
     return this.http.get(environment.apiTarget + `/home/getEmailTemplates`);
   }
-  getEmailText(postData){
+  getEmailText(postData) {
     return this.http.post(environment.apiTarget + `/home/getEmailText`, postData);
+  }
+  sendMail(postData) {
+    return this.http.post(environment.apiTarget + `/emailController/send_email`, postData);
   }
 }

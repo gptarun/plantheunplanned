@@ -19,7 +19,7 @@ export class EmailManagementComponent implements OnInit {
 
 
   //Trek Leader autocomplete
-  leaderValue = "";
+  leaderValue = {};
   myControl = new FormControl();
   options: any[] = [];
   filteredOptions: Observable<any[]>;
@@ -39,6 +39,8 @@ export class EmailManagementComponent implements OnInit {
   trekList = [];
   emailList = [];
   emailText = '';
+  emailTemplate = '';
+
   constructor(private adminservice: AdminserviceService) { }
 
   ngOnInit() {
@@ -68,8 +70,11 @@ export class EmailManagementComponent implements OnInit {
   }
 
   //These will be use for auto complete dropdown in Front end -> Trek Leader list
+  //User means Trek Leader
   displayFn(user?: any): string | undefined {
     console.log(user);
+    this.leaderValue = user;
+    console.log(this.leaderValue);
     return user ? user.name : undefined;
   }
 
@@ -79,13 +84,13 @@ export class EmailManagementComponent implements OnInit {
     return this.options.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
   }
 
-  //These will be use for auto complete dropdown in Front end -> Trek Leader list
+  //These will be use for auto complete dropdown in Front end -> Trek list
   displayFnTrek(trek?: any): string | undefined {
     console.log(trek);
     return trek ? trek.post_title : undefined;
   }
 
-  //These will be use for auto complete dropdown in Front end -> Trek Leader list
+  //These will be use for auto complete dropdown in Front end -> Trek list
   private _filterTrek(post_title: string): any[] {
     const filterValue = post_title.toLowerCase();
     return this.trekOptions.filter(trekOptions => trekOptions.post_title.toLowerCase().indexOf(filterValue) === 0);
@@ -152,6 +157,18 @@ export class EmailManagementComponent implements OnInit {
     });
   }
 
+  sendMail() {    
+    
+    this.postData = {
+      users: this.checkListId,
+      emailBody: this.emailText,
+      leaderEmail: this.leaderValue['email']
+    }
+    this.adminservice.sendMail(this.postData).subscribe((responseData: any[]) => {
+      console.log(responseData);
+      console.log("sent");
+    });
+  }
   clearFilter() {
     this.selectFilter = '';
     this.searchValue = '';
