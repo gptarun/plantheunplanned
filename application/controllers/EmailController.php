@@ -29,8 +29,6 @@ class EmailController extends CI_Controller
         $emailBody = $post["emailBody"];
         $leaderEmail = $post["leaderEmail"];
 
-        echo $users, $emailBody,  $leaderEmail;
-
         $this->load->library("phpmailer_library");
         $mail = $this->phpmailer_library->load();
 
@@ -72,9 +70,13 @@ class EmailController extends CI_Controller
 
         $mail->SetFrom(GUSER, 'PlanTheUnplanned');
         $mail->Subject = 'Testing';
-        $mail->Body = 'Testing Body';
-        $mail->AddAddress('tarung1201@gmail.com');
-
+        $mail->IsHTML(true);
+        $mail->Body = $emailBody;
+        foreach ($users as $value) {
+            $mail->AddAddress($value);
+        }
+        //$mail->AddAddress('tarung1201@gmail.com');
+        $mail->AddCC($leaderEmail);
         $mail->SMTPOptions = array(
             'ssl' => array(
                 'verify_peer' => false,
