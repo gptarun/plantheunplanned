@@ -76,7 +76,10 @@
                           </label>
                         </div>
                         <div class="col-md-4">
-                          <a [routerLink]="['/edituser']"><i class="material-icons">edit</i></a>
+                          <!-- <button class="material-icons" (click)="editUser(item)"><i
+                              class="material-icons">edit</i></button> -->
+                          <!-- <a [routerLink]="['/edituser']"><i class="material-icons">edit</i></a> -->
+                          <a href="javascript: void(0)"><i (click)="editUser(item)" class="material-icons">edit</i></a>
                         </div>
                       </div>
                     </td>

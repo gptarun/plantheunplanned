@@ -1,92 +1,97 @@
 <div class="main-content">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header card-header-info">
-              <h4 class="card-title">Update user</h4>
-              <p class="card-category">Complete your profile</p>
-            </div>
-            <div class="card-body">
-              <form>
-                <div class="row">
-                  <div class="col-md-3">
-                    <mat-form-field class="example-full-width">
-                      <input matInput placeholder="Username">
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-4">
-                    <mat-form-field class="example-full-width">
-                      <input matInput placeholder="Email address" type="email">
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-4">
-                    <mat-form-field class="example-full-width">
-                      <input matInput placeholder="Mobile No" type="number">
-                    </mat-form-field>
-                  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-info">
+            <h4 class="card-title">Update user</h4>
+            <p class="card-category">Complete your profile</p>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-md-3">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Username" formControlName="user_login">
+                  </mat-form-field>
                 </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <mat-form-field class="example-full-width">
-                      <input matInput placeholder="Fist Name" type="text">
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-6">
-                    <mat-form-field class="example-full-width">
-                      <input matInput placeholder="Last Name" type="text">
-                    </mat-form-field>
-                  </div>
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Email address" type="email" formControlName="user_email">
+                  </mat-form-field>
                 </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <mat-form-field class="example-full-width">
-                      <input matInput placeholder="Adress" type="text">
-                    </mat-form-field>
-                  </div>
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Mobile No" type="number" formControlName="user_email">
+                  </mat-form-field>
                 </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <mat-form-field class="example-full-width">
-                      <input matInput placeholder="City" type="text">
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-4">
-                    <mat-form-field class="example-full-width">
-                      <input matInput placeholder="Country" type="text">
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-4">
-                    <mat-form-field class="example-full-width">
-                      <input matInput placeholder="Postal Code" type="text">
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-4">
-                    <mat-form-field>
-                      <mat-label>Membership Plan</mat-label>
-                      <mat-select [(value)]="selected">
-                        <mat-option>None</mat-option>
-                        <mat-option value="1">Musafir</mat-option>
-                        <mat-option value="2">Explorer</mat-option>
-                        <mat-option value="3">Backpacker</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-4">
-                    <mat-form-field>
-                      <input matInput [matDatepicker]="picker" placeholder="Membership date">
-                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                      <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
-                  </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Name" type="text" formControlName="user_email">
+                  </mat-form-field>
                 </div>
-                <button mat-raised-button type="submit" class="btn btn-info pull-right">Update User</button>
-                <a [routerLink]="['/user']" class="btn btn-info pull-right" style="color: white;">Cancel</a>
-                <div class="clearfix"></div>
-              </form>
-            </div>
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Dsiplay Name" type="text" formControlName="user_email">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Address" type="text" formControlName="user_email">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="City" type="text" value="NA">
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Country" type="text" value="India">
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Postal Code" type="text" value="NA">
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <mat-label>Membership Plan</mat-label>
+                    <mat-select [(value)]="selected">
+                      <mat-option>None</mat-option>
+                      <mat-option value="1">Musafir</mat-option>
+                      <mat-option value="2">Explorer</mat-option>
+                      <mat-option value="3">Backpacker</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <input matInput [matDatepicker]="picker" placeholder="Membership date">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="User Created" type="text" formControlName="user_registered">
+                  </mat-form-field>
+                </div>
+              </div>
+              <button mat-raised-button type="submit" class="btn btn-info pull-right">Update User</button>
+              <a [routerLink]="['/user']" class="btn btn-info pull-right" style="color: white;">Cancel</a>
+              <div class="clearfix"></div>
+            </form>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>

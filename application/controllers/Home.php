@@ -114,6 +114,14 @@ class Home extends CI_Controller
         //write logic to edit
     }
 
+    public function getUserById(){
+        $post = json_decode(file_get_contents("php://input"), true);
+        $id = $post["id"];
+        $result = $this->homemodel->getUserById($id);
+
+        echo json_encode($result);
+    }
+
     public function searchUser()
     {
         $post = json_decode(file_get_contents("php://input"), true);

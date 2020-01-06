@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminserviceService } from 'app/service/adminservice.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-user-management',
@@ -8,7 +9,7 @@ import { AdminserviceService } from 'app/service/adminservice.service';
 })
 export class UserManagementComponent implements OnInit {
 
-  constructor(private adminservice: AdminserviceService) { }
+  constructor(private router: Router, private adminservice: AdminserviceService) { }
 
   userList = [];
   selectFilter = '';
@@ -43,6 +44,14 @@ export class UserManagementComponent implements OnInit {
       date: this.dateValue
     }
     this.callUserApi(this.postData);
+  }
+
+  editUser(user) {
+    console.log('yes');
+    console.log(user);
+    window.localStorage.removeItem("editUserId");
+    window.localStorage.setItem("editUserId", user.ID.toString());
+    this.router.navigate(['edituser']);
   }
 
   clearFilter() {

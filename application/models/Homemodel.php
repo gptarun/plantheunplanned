@@ -60,6 +60,11 @@ class Homemodel extends CI_Model
     {
     }
 
+    public function getUserById($id)
+    {
+        return $this->db->select('*')->from('wp_users')->where("ID = '$id'")->get()->result_array();
+    }
+
     public function searchUser($offset, $limit, $filter, $search, $date)
     {
         // return $this->db->get_where('wp_users', array($filter => $search))->result();        

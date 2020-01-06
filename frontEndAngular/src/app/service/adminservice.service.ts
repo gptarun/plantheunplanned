@@ -33,6 +33,13 @@ export class AdminserviceService {
     return this.http.post(environment.apiTarget + `/home/searchUser`, data);
   }
 
+  getUserById(id) {
+    this.postData = {
+      'id': id
+    }
+    return this.http.post(environment.apiTarget + `/home/getUserById`, this.postData);
+  }
+
   getUsersCount(data) {
     return this.http.post(environment.apiTarget + `/home/searchUserCount`, data);
   }
