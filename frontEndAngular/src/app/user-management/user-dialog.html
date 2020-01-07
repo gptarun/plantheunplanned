@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Delet</h1>
+<div mat-dialog-content>
+    <p>You want to delete {{data.description.length}} users?</p>
+    <mat-form-field>
+        <textarea matInput [disabled] placeholder="Your selected Emails" rows="3"
+            [(ngModel)]="data.description"></textarea>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button [mat-dialog-close]="data.action" [disabled]="data.description.length==0"
+        cdkFocusInitial>Delete</button>
+</div>

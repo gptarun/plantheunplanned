@@ -20,8 +20,12 @@ export class AdminserviceService {
     }
     this.http.post(environment.apiTarget + `/home/login`, this.postData).subscribe(
       data => {
-        console.log("Login is successful ");
-        this.router.navigate(["dashboard"]);
+        if (data['Success'] == true) {
+          console.log("Login is successful ");
+          this.router.navigate(["dashboard"]);
+        } else {
+          alert(data['Message']);
+        }
       },
       error => {
         console.log("Error", error);
@@ -42,6 +46,27 @@ export class AdminserviceService {
 
   getUsersCount(data) {
     return this.http.post(environment.apiTarget + `/home/searchUserCount`, data);
+  }
+
+  addUser(userData) {
+    this.postData = {
+      'data': userData
+    }
+    return this.http.post(environment.apiTarget + `/home/addUser`, this.postData);
+  }
+  updateUser(userData) {
+    console.log("in service");
+    this.postData = {
+      'data': userData
+    }
+    return this.http.post(environment.apiTarget + `/home/updateUser`, this.postData);
+  }
+
+  deleteUser(userList) {
+    this.postData = {
+      'data': userList
+    }
+    return this.http.post(environment.apiTarget + `/home/deletUser`, this.postData);
   }
 
   getTrekLeaders() {

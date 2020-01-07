@@ -1,3 +1,34 @@
-<p>
-  settings works!
-</p>
+<div class="row" style="margin-top: 8%;">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-info">
+        <h4 class="card-title ">Change Password</h4>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="changepass" (ngSubmit)="onSubmit()">
+          <div style="margin-left: 1%;">
+            <div class="col-md-3">
+              <mat-form-field>
+                <input matInput placeholder="New Password" [type]="hide ? 'password' : 'text'" formControlName="pass"
+                  required>
+                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field>
+                <input matInput placeholder="Re-Type Password" [type]="reHide ? 'password' : 'text'"
+                  formControlName="newpass" required>
+                <mat-icon matSuffix (click)="reHide = !reHide">{{reHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </mat-form-field>
+            </div>
+            <div>
+              <p *ngIf="passwordInput.value != repasswordInput.value && passwordInput.value !=''" class="text-danger">
+                *Passowrds do not match</p>
+              <button mat-raised-button type="submit" class="btn btn-info pull-right" style="float: left;"
+                [disabled]="passwordInput.value != repasswordInput.value && passwordInput.value !=''">Change</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

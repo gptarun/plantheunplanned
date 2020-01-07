@@ -62,36 +62,23 @@ class Home extends CI_Controller
         $password = $post["password"];
 
         $result = $this->homemodel->verifyLogin($username, $password);
-        if ($result == "WRONG_PASSWORD") {
+        if ($result == "Success") {
             $return_data = array(
                 "Data" => null,
-                "Status" => 200,
-                "Message" => "Password is incorrect",
-                "Token" => null,
-                "Success" => false
-            );
-        } else if ($result == "NO_USER_FOUND") {
-            $return_data = array(
-                "Data" => null,
-                "Status" => 200,
-                "Message" => "User not found",
-                "Token" => null,
-                "Success" => false
-            );
-        } else {
-            $data = array(
-                'user' => $result
-            );
-            $return_data = array(
-                "Data" => $data,
                 "Status" => 200,
                 "Message" => "User logged in successfully",
                 "Token" => null,
                 "Success" => true
             );
-        }
-
-
+        } else if ($result == "Failed") {
+            $return_data = array(
+                "Data" => null,
+                "Status" => 200,
+                "Message" => "Username or Password is incorrect",
+                "Token" => null,
+                "Success" => false
+            );
+        } 
         echo json_encode($return_data);
     }
 
@@ -99,22 +86,84 @@ class Home extends CI_Controller
     {
         $post = json_decode(file_get_contents("php://input"), true);
         $data = $post["data"];
-        $this->db->insert('wp_users', $data);
-        $this->db->insert_id();
-        echo json_encode('Success');
+        $query_result = $this->db->insert('wp_users', $data);
+        //$query_result = $this->db->insert_id();
+        if (!$query_result) {
+            $return_data = array(
+                "status" => 400,
+                "message" => "User " . $data['user_nicename'] . " not added",
+                "Token" => null,
+                "Success" => false
+            );
+        } else {
+            $return_data = array(
+                "status" => 200,
+                "message" => "User " . $data['user_nicename'] . " added successfully",
+                "Token" => null,
+                "Success" => true
+            );
+        }
+        echo json_encode($return_data);
     }
 
     public function deletUser()
     {
-        //Write logic to delete
+        $post = json_decode(file_get_contents("php://input"), true);
+        $data = $post["data"];
+        $query = 'DELETE FROM wp_users WHERE ID in (';
+        foreach ($data as $value) {
+            $query = $query . $value . ', ';
+        }
+        $query = substr($query, 0, -2);
+        $query = $query . ')';
+        $query_result = $this->db->query($query);
+
+        if (!$query_result) {
+            $return_data = array(
+                "status" => 400,
+                "message" => "Users failed to delete",
+                "Token" => null,
+                "Success" => false
+            );
+        } else {
+            $return_data = array(
+                "status" => 200,
+                "message" => "Users deleted successfully",
+                "Token" => null,
+                "Success" => true
+            );
+        }
+
+        echo json_encode($return_data);
     }
 
-    public function editUser()
+    public function updateUser()
     {
-        //write logic to edit
+        $post = json_decode(file_get_contents("php://input"), true);
+        $data = $post["data"];
+        $this->db->where('ID', $data['ID']);
+        $query_result = $this->db->update('wp_users', $data);
+        if (!$query_result) {
+            $return_data = array(
+                "status" => 400,
+                "message" => "User " . $data['user_nicename'] . " not updated",
+                "Token" => null,
+                "Success" => false
+            );
+        } else {
+            $return_data = array(
+                "status" => 200,
+                "message" => "User " . $data['user_nicename'] . " updated successfully",
+                "Token" => null,
+                "Success" => true
+            );
+        }
+
+        echo json_encode($return_data);
     }
 
-    public function getUserById(){
+    public function getUserById()
+    {
         $post = json_decode(file_get_contents("php://input"), true);
         $id = $post["id"];
         $result = $this->homemodel->getUserById($id);

@@ -27,21 +27,12 @@ class Homemodel extends CI_Model
 
     public function verifyLogin($username, $password)
     {
-        $this->db->select('*');
-        $this->db->from('wp_users');
-        $this->db->where('user_login', $username);
-        $result = $this->db->get();
-        $numrows = $result->num_rows();
-        if ($numrows == 1) {
-            return $username;
-            $row = $result->row();
-            if (password_verify($password, $row->password)) {
-                return $row;
-            } else {
-                return "WRONG_PASSWORD";
-            }
+        $query = $this->db->query("select * from user_admin WHERE 'username = ' . $username . ' AND password =' . $password ");
+
+        if ($query->num_rows() == 1) {
+            return "Success";
         } else {
-            return "NO_USER_FOUND";
+            return "Failed";
         }
     }
 
@@ -56,8 +47,9 @@ class Homemodel extends CI_Model
     {
     }
 
-    public function editUser($data)
+    public function updateUser($data)
     {
+        return $data;
     }
 
     public function getUserById($id)

@@ -46,7 +46,7 @@
                       </div>
                       <div class="form-check col-md-4">
                         <label class="form-check-label">
-                          <input class="form-check-input" type="checkbox" value="">
+                          <input class="form-check-input" type="checkbox" (change)="checkUserAll($event)">
                           <span class="form-check-sign">
                             <span class="check"></span>
                           </span>
@@ -69,7 +69,8 @@
                         </div>
                         <div class="form-check col-md-4">
                           <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
+                            <input class="form-check-input" type="checkbox" name="user" [checked]="item.selected"
+                              (change)="checkUser($event,item.ID)">
                             <span class="form-check-sign">
                               <span class="check"></span>
                             </span>
@@ -100,7 +101,7 @@
           <div class="row">
             <div class="col-md-3">
               <a [routerLink]="['/adduser']" class="btn btn-info pull-right" style="color: white;">Add</a>
-              <a class="btn btn-info pull-right" style="color: white;">Delete</a>
+              <a class="btn btn-info pull-right" style="color: white;" (click)="deletUser()">Delete</a>
             </div>
           </div>
         </div>
