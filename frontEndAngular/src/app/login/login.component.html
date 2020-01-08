@@ -13,14 +13,27 @@
     <!-- Login Form -->
     <form>
       <input type="text" id="login" class="fadeIn second" name="login" placeholder="Login" [(ngModel)]="username">
-      <input type="password" id="password" class="fadeIn third" name="login" placeholder="Password" [(ngModel)]="password">
-      <input type="submit" class="fadeIn fourth" value="Log In" (click)="login()">
+      <input type="password" id="password" class="fadeIn second" name="login" placeholder="Password"
+        [(ngModel)]="password">
+      <input type="submit" class="fadeIn second" value="Log In" [disabled]="username == '' || password == ''"
+        (click)="login()">
     </form>
 
     <!-- Remind Passowrd -->
     <div id="formFooter">
-      <a class="underlineHover" href="#">Forgot Password?</a>
+      <input type="submit" class="fadeIn second" value="Forgot Password?" (click)="showForget = !showForget">
     </div>
-
+    <div *ngIf="showForget">
+      <!-- Login Form -->
+      <form [formGroup]="changepass" (ngSubmit)="onSubmit()">
+        <input type="password" id="password" name="login" placeholder="New Password" formControlName="pass" required>
+        <input type="password" id="password" name="login" placeholder="Retype Password" formControlName="newpass"
+          required>
+        <p *ngIf="passwordInput.value != repasswordInput.value && passwordInput.value !=''" class="text-danger">
+          *Passowrds do not match</p>
+        <input type="submit" value="Change Password"
+          [disabled]="passwordInput.value != repasswordInput.value || passwordInput.value =='' || repasswordInput.value ==''">
+      </form>
+    </div>
   </div>
 </div>

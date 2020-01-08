@@ -23,12 +23,11 @@ class Homemodel extends CI_Model
         return $this->db->insert_id();
     }
 
-
-
     public function verifyLogin($username, $password)
     {
-        $query = $this->db->query("select * from user_admin WHERE 'username = ' . $username . ' AND password =' . $password ");
-
+        
+        $query = $this->db->query("select * from user_admin WHERE `username` =  '$username' AND `password` =  '$password' ");
+        
         if ($query->num_rows() == 1) {
             return "Success";
         } else {

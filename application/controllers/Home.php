@@ -78,7 +78,33 @@ class Home extends CI_Controller
                 "Token" => null,
                 "Success" => false
             );
-        } 
+        }
+        echo json_encode($return_data);
+    }
+
+    public function changePassword()
+    {
+        $post = json_decode(file_get_contents("php://input"), true);
+        $password = $post["data"];
+        $this->db->set('password',$password);
+        $this->db->where('username', 'admin');
+        $query_result = $this->db->update('user_admin');
+        if (!$query_result) {
+            $return_data = array(
+                "status" => 400,
+                "message" => "Failed to update password",
+                "Token" => null,
+                "Success" => false
+            );
+        } else {
+            $return_data = array(
+                "status" => 200,
+                "message" => "User Password updated successfully",
+                "Token" => null,
+                "Success" => true
+            );
+        }
+
         echo json_encode($return_data);
     }
 
