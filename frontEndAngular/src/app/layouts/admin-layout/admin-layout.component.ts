@@ -22,7 +22,7 @@ export class AdminLayoutComponent implements OnInit {
     ngOnInit() {
 
         if (window.localStorage.getItem("username") != 'admin') {
-            this.router.navigate([""]);
+            this.router.navigate(["useradmin"]);
         }
 
         const isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;

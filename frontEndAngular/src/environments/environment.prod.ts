@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: false,
+  apiTarget: "http://localhost/code/code_api/index.php"
 };

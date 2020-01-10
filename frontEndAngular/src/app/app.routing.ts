@@ -7,12 +7,8 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
+  { path: 'useradmin', component: LoginComponent },
   {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'prefix',
-  },{
     path: '',
     component: AdminLayoutComponent,
     children: [{
