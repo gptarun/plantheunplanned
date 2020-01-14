@@ -32,6 +32,7 @@ import {
   MatDialogModule,
   MatIconModule
 } from '@angular/material';
+import { EditTrekComponent } from 'app/trek-management/edit-trek/edit-trek.component';
 
 @NgModule({
   imports: [
@@ -70,7 +71,8 @@ import {
     SettingsComponent,
     AdduserComponent,
     EdituserComponent,
-    DeleteDialog
+    DeleteDialog,
+    EditTrekComponent
   ],
   entryComponents: [DeleteDialog],
 })

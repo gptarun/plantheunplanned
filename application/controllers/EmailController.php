@@ -27,14 +27,12 @@ class EmailController extends CI_Controller
         $post = json_decode(file_get_contents("php://input"), true);
         $users = $post["users"];
         $emailBody = $post["emailBody"];
-        $leaderEmail = $post["leaderEmail"];
 
         $this->load->library("phpmailer_library");
         $mail = $this->phpmailer_library->load();
 
-
         $mail->IsSMTP(); // enable SMTP
-        $mail->SMTPDebug = 1;  // debugging: 1 = errors and messages, 2 = messages only
+        //$mail->SMTPDebug = 1;  // debugging: 1 = errors and messages, 2 = messages only
         $mail->SMTPAuth = true;  // authentication enabled
         $mail->AuthType = 'XOAUTH2';
 
@@ -76,7 +74,11 @@ class EmailController extends CI_Controller
             $mail->AddAddress($value);
         }
         //$mail->AddAddress('tarung1201@gmail.com');
-        $mail->AddCC($leaderEmail);
+        if (isset($post["leaderEmail"])) {
+            $leaderEmail = $post["leaderEmail"];
+            $mail->AddCC($leaderEmail);
+        }
+
         $mail->SMTPOptions = array(
             'ssl' => array(
                 'verify_peer' => false,
@@ -87,10 +89,22 @@ class EmailController extends CI_Controller
 
         if (!$mail->Send()) {
             $error = 'Mail error: ' . $mail->ErrorInfo;
-            return false;
+            $return_data = array(
+                "status" => 400,
+                "message" =>  $error,
+                "Token" => null,
+                "Success" => false
+            );
+            echo json_encode($return_data);
         } else {
             $error = 'Message sent!';
-            return true;
+            $return_data = array(
+                "status" => 200,
+                "message" => $error,
+                "Token" => null,
+                "Success" => true
+            );
+            echo json_encode($return_data);
         }
     }
 }

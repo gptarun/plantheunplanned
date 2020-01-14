@@ -14,9 +14,10 @@ import { MembershipManagementComponent } from 'app/membership-management/members
 import { SettingsComponent } from 'app/settings/settings.component';
 import { AdduserComponent } from 'app/user-management/adduser/adduser.component';
 import { EdituserComponent } from 'app/user-management/edituser/edituser.component';
+import { EditTrekComponent } from 'app/trek-management/edit-trek/edit-trek.component';
 
 export const AdminLayoutRoutes: Routes = [
-   
+
     { path: 'dashboard', component: DashboardComponent },
     { path: 'user', component: UserManagementComponent },
     { path: 'email', component: EmailManagementComponent },
@@ -25,6 +26,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'settings', component: SettingsComponent },
     { path: 'adduser', component: AdduserComponent },
     { path: 'edituser', component: EdituserComponent },
+    { path: 'edittrek', component: EditTrekComponent },
 
     { path: 'user-profile', component: UserProfileComponent },
     { path: 'table-list', component: TableListComponent },
