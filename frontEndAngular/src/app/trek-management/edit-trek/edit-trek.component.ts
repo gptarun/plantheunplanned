@@ -24,15 +24,13 @@ export class EditTrekComponent implements OnInit {
 
     this.editForm = this.formBuilder.group({
       ID: ['', Validators.required],
-      user_login: ['', Validators.required],
-      user_pass: ['', Validators.required],
-      user_nicename: ['', Validators.required],
-      user_email: ['', Validators.required],
-      user_url: ['', Validators.required],
-      user_registered: ['', Validators.required],
-      user_activation_key: ['', Validators.required],
-      user_status: ['', Validators.required],
-      display_name: ['', Validators.required]
+      post_title: ['', Validators.required],
+      post_content: ['', Validators.required],
+      post_status: ['', Validators.required],
+      post_name: ['', Validators.required],
+      post_modified: ['', Validators.required],
+      post_date: ['', Validators.required],
+      post_type: ['', Validators.required],     
     });
 
     this.adminservice.getUserById(userId)
