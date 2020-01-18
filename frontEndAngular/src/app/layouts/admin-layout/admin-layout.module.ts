@@ -34,6 +34,7 @@ import {
 } from '@angular/material';
 import { EditTrekComponent } from 'app/trek-management/edit-trek/edit-trek.component';
 import { ImportComponent } from 'app/import/import.component';
+import { AddimportComponent } from 'app/import/addimport/addimport.component';
 
 @NgModule({
   imports: [
@@ -74,7 +75,8 @@ import { ImportComponent } from 'app/import/import.component';
     EdituserComponent,
     DeleteDialog,
     EditTrekComponent, 
-    ImportComponent
+    ImportComponent,
+    AddimportComponent
   ],
   entryComponents: [DeleteDialog],
 })
