@@ -1,0 +1,34 @@
+<div class="row" style="margin-top: 8%;">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-info">
+        <h4 class="card-title ">Import data</h4>
+      </div>
+      <div class="card-body">
+        <div style="margin-left: 1%;" class="row">
+          <div class="col-md-3">
+            <mat-form-field>
+              <mat-label>Select</mat-label>
+              <mat-select [(value)]="selected" [(ngModel)]="selectFilter">
+                <mat-option>None</mat-option>
+                <!-- Added table names here in value -->
+                <mat-option value="email_template">User Order</mat-option>
+                <mat-option value="trek_leader">Trek Leaders</mat-option>
+                <mat-option value="email_template">Email Templates</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <input placeholder="Choose File" type="file">
+          </div>
+          <div class="col-md-2">
+            <button mat-raised-button type="submit" class="btn btn-info pull-right" style="float: left;">Download
+              Template</button>
+          </div>
+        </div>
+        <div>
+          <button mat-raised-button type="submit" class="btn btn-info pull-right" style="float: left;">Import</button>
+        </div>
+      </div>
+    </div>
+  </div>

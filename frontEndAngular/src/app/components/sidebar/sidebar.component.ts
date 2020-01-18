@@ -14,6 +14,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/trek', title: 'Trek Management',  icon: 'nature_people', class: '' },
     { path: '/member', title: 'Membership Management',  icon: 'card_membership', class: '' },
     { path: '/settings', title: 'Settings',  icon: 'settings_applications', class: '' },
+    { path: '/import', title: 'Import',  icon: 'settings_applications', class: '' },
 
     // { path: '/user-profile', title: 'User Profile',  icon:'person', class: '' },
     // { path: '/table-list', title: 'Table List',  icon:'content_paste', class: '' },
