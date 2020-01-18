@@ -16,6 +16,7 @@ import { AdduserComponent } from 'app/user-management/adduser/adduser.component'
 import { EdituserComponent } from 'app/user-management/edituser/edituser.component';
 import { EditTrekComponent } from 'app/trek-management/edit-trek/edit-trek.component';
 import { ImportComponent } from 'app/import/import.component';
+import { AddimportComponent } from 'app/import/addimport/addimport.component';
 
 export const AdminLayoutRoutes: Routes = [
 
@@ -29,6 +30,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'edituser', component: EdituserComponent },
     { path: 'edittrek', component: EditTrekComponent },
     { path: 'import', component: ImportComponent },
+    { path: 'addimport', component: AddimportComponent },
 
     { path: 'user-profile', component: UserProfileComponent },
     { path: 'table-list', component: TableListComponent },

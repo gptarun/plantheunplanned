@@ -26,8 +26,13 @@
               Template</button>
           </div>
         </div>
-        <div>
-          <button mat-raised-button type="submit" class="btn btn-info pull-right" style="float: left;">Import</button>
+        <div class="row">
+          <div class="col-md-2">
+            <button mat-raised-button type="submit" class="btn btn-info pull-right" style="float: left;">Import Now</button>
+          </div>
+          <div class="col-md-1">
+            <a [routerLink]="['/addimport']" class="btn btn-info pull-right" style="color: white;">Add</a>
+          </div>
         </div>
       </div>
     </div>
