@@ -298,4 +298,28 @@ class Home extends CI_Controller
 
         echo json_encode($return_data);
     }
+
+    public function addUserTrek()
+    {
+        $post = json_decode(file_get_contents("php://input"), true);
+        $data = $post["data"];
+        $query_result = $this->db->insert('user_orders', $data);
+        //$query_result = $this->db->insert_id();
+        if (!$query_result) {
+            $return_data = array(
+                "status" => 400,
+                "message" => "Order id " . $data['order_id'] . " not added",
+                "Token" => null,
+                "Success" => false
+            );
+        } else {
+            $return_data = array(
+                "status" => 200,
+                "message" => "Order id " . $data['order_id'] . " added successfully",
+                "Token" => null,
+                "Success" => true
+            );
+        }
+        echo json_encode($return_data);
+    }
 }

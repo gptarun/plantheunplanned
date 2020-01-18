@@ -112,6 +112,12 @@ export class AdminserviceService {
     return this.http.post(environment.apiTarget + `/home/updateTrek`, this.postData);
   }
 
+  addUserTrek(userTrek) {
+    this.postData = {
+      'data': userTrek
+    }
+    return this.http.post(environment.apiTarget + `/home/addUserTrek`, this.postData);
+  }
 
   showNotification(from, align, message, status) {
     const type = ['', 'info', 'success', 'warning', 'danger'];
