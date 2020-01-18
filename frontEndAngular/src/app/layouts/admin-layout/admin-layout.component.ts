@@ -21,7 +21,7 @@ export class AdminLayoutComponent implements OnInit {
 
     ngOnInit() {
 
-        if (window.localStorage.getItem("username") != 'admin') {
+        if (window.localStorage.getItem("username") != 'admin') {            
             this.router.navigate(["useradmin"]);
         }
 

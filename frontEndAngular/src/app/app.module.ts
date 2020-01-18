@@ -1,5 +1,5 @@
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { NgModule } from "@angular/core";
+import { NgModule, HostListener } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { RouterModule } from "@angular/router";
@@ -35,4 +35,9 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  @HostListener('window:beforeunload', ['$event'])
+  public beforeunloadHandler($event) {
+    window.localStorage.removeItem('username');
+  }
+}

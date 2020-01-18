@@ -86,7 +86,7 @@ class Home extends CI_Controller
     {
         $post = json_decode(file_get_contents("php://input"), true);
         $password = $post["data"];
-        $this->db->set('password',$password);
+        $this->db->set('password', $password);
         $this->db->where('username', 'admin');
         $query_result = $this->db->update('user_admin');
         if (!$query_result) {
@@ -263,5 +263,39 @@ class Home extends CI_Controller
         $email_id = $post["emailId"];
         $result = $this->homemodel->getEmailText($email_id);
         echo json_encode($result);
+    }
+
+    public function getTrekById()
+    {
+        $post = json_decode(file_get_contents("php://input"), true);
+        $id = $post["id"];
+        $result = $this->homemodel->getTrekById($id);
+
+        echo json_encode($result);
+    }
+
+    public function updateTrek()
+    {
+        $post = json_decode(file_get_contents("php://input"), true);
+        $data = $post["data"];
+        $this->db->where('ID', $data['ID']);
+        $query_result = $this->db->update('wp_posts', $data);
+        if (!$query_result) {
+            $return_data = array(
+                "status" => 400,
+                "message" => "User " . $data['post_title'] . " not updated",
+                "Token" => null,
+                "Success" => false
+            );
+        } else {
+            $return_data = array(
+                "status" => 200,
+                "message" => "User " . $data['post_title'] . " updated successfully",
+                "Token" => null,
+                "Success" => true
+            );
+        }
+
+        echo json_encode($return_data);
     }
 }

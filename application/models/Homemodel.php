@@ -25,9 +25,9 @@ class Homemodel extends CI_Model
 
     public function verifyLogin($username, $password)
     {
-        
+
         $query = $this->db->query("select * from user_admin WHERE `username` =  '$username' AND `password` =  '$password' ");
-        
+
         if ($query->num_rows() == 1) {
             return "Success";
         } else {
@@ -111,5 +111,9 @@ class Homemodel extends CI_Model
     public function getEmailText($email_id)
     {
         return $this->db->select('email_text')->from('email_template')->where("email_id = '$email_id'")->get()->result_array();
+    }
+    public function getTrekById($id)
+    {
+        return $this->db->select('*')->from('wp_posts')->where("ID = '$id'")->get()->result_array();
     }
 }

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, HostListener } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -77,4 +77,10 @@ import { EditTrekComponent } from 'app/trek-management/edit-trek/edit-trek.compo
   entryComponents: [DeleteDialog],
 })
 
-export class AdminLayoutModule { }
+export class AdminLayoutModule {
+
+  @HostListener('window:beforeunload', ['$event'])
+  public beforeunloadHandler($event) {
+    window.localStorage.removeItem('username');
+  }
+}

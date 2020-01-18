@@ -25,7 +25,7 @@ export class AdminserviceService {
           console.log("Login is successful ");
           window.localStorage.removeItem("username");
           window.localStorage.setItem("username", usernameUi.toString());
-          
+
           this.showNotification('top', 'right', data['Message'], true);
           this.router.navigate(["dashboard"]);
         } else {
@@ -95,6 +95,23 @@ export class AdminserviceService {
     }
     return this.http.post(environment.apiTarget + `/home/changePassword`, this.postData);
   }
+
+  getTrekById(id) {
+    this.postData = {
+      'id': id
+    }
+    return this.http.post(environment.apiTarget + `/home/getTrekById`, this.postData);
+  }
+
+
+  updateTrek(trekData) {
+    console.log("in service");
+    this.postData = {
+      'data': trekData
+    }
+    return this.http.post(environment.apiTarget + `/home/updateTrek`, this.postData);
+  }
+
 
   showNotification(from, align, message, status) {
     const type = ['', 'info', 'success', 'warning', 'danger'];

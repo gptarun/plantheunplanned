@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   showForget = false;
   ngOnInit() {
     if (window.localStorage.getItem("username") == 'admin') {
-      window.localStorage.removeItem("username")
+      window.localStorage.removeItem("username");
     }
   }
 
