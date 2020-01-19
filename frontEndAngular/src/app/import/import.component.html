@@ -23,8 +23,10 @@
               <input placeholder="Choose File" type="file" (change)="onFileChange($event)">
             </div>
             <div class="col-md-2">
-              <button mat-raised-button type="button" class="btn btn-info pull-right" style="float: left;">Download
-                Template</button>
+              <!-- <a href="assets/template/selectFilter" class="btn btn-info pull-right" style="color: white;">Download
+                Template</a> -->
+              <button mat-raised-button type="button" class="btn btn-info pull-right" style="float: left;"
+                (click)="downloadTemplate(selectFilter)">Download Template</button>
             </div>
           </div>
           <div class="row">

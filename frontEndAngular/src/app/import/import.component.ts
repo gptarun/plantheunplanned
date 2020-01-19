@@ -51,6 +51,16 @@ export class ImportComponent implements OnInit {
       });
   }
 
+  downloadTemplate(file_name) {
+    let link = document.createElement('a');
+    link.setAttribute('type', 'hidden');
+    link.href = 'assets/template/' + file_name + ".csv";
+    link.download = file_name + ".csv";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }
+
   showNotification(from, align, message, status) {
     const type = ['', 'info', 'success', 'warning', 'danger'];
     var color = 0;
