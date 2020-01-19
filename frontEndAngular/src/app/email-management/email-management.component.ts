@@ -42,6 +42,7 @@ export class EmailManagementComponent implements OnInit {
   emailText = '';
   emailTemplate = '';
   meet_your_fellow_trekkers = "";
+  checked_user_email = "";
 
   constructor(private adminservice: AdminserviceService) { }
 
@@ -104,6 +105,19 @@ export class EmailManagementComponent implements OnInit {
         if (event.target.checked) {
           this.checkListId.push(element);
           element.selected = event.target.checked;
+
+          if (this.checked_user_email){
+            this.adminservice.getEmailText({emailId: this.checked_user_email}).subscribe((responseData: any[]) => {
+              this.meet_your_fellow_trekkers = "";
+              this.meet_your_fellow_trekkers += "<table><tr><th>Sl.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
+              this.checkListId.forEach(element => {
+                this.meet_your_fellow_trekkers += "<tr><td>"+element.ID+"</td><td>"+element.user_nicename+"</td><td>"+element.user_email+"</td><td>"+element.user_email+"</td></tr>";
+              });
+              this.meet_your_fellow_trekkers += "</table>";
+              this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.meet_your_fellow_trekkers).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
+            });
+          }
+
         }
         else {
           var position = this.checkListId.indexOf(element);
@@ -112,6 +126,19 @@ export class EmailManagementComponent implements OnInit {
           }
           this.checkListId.splice(position, 1);
           element.selected = event.target.checked;
+
+          if (this.checked_user_email){
+            this.adminservice.getEmailText({emailId: this.checked_user_email}).subscribe((responseData: any[]) => {
+              this.meet_your_fellow_trekkers = "";
+              this.meet_your_fellow_trekkers += "<table><tr><th>Sl.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
+              this.checkListId.forEach(element => {
+                this.meet_your_fellow_trekkers += "<tr><td>"+element.ID+"</td><td>"+element.user_nicename+"</td><td>"+element.user_email+"</td><td>"+element.user_email+"</td></tr>";
+              });
+              this.meet_your_fellow_trekkers += "</table>";
+              this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.meet_your_fellow_trekkers).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
+            });
+          }
+                    
         }
       }
     });
@@ -123,13 +150,38 @@ export class EmailManagementComponent implements OnInit {
       this.checkListId = [];
       const checked = $event.target.checked;
       console.log(checked);
-      this.userList.forEach(item => { item.selected = checked; this.checkListId.push(item.user_email); });
+      this.userList.forEach(item => { item.selected = checked; this.checkListId.push(item); });
+
+      if (this.checked_user_email){
+        this.adminservice.getEmailText({emailId: this.checked_user_email}).subscribe((responseData: any[]) => {
+          this.meet_your_fellow_trekkers = "";
+          this.meet_your_fellow_trekkers += "<table><tr><th>Sl.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
+          this.checkListId.forEach(element => {
+            this.meet_your_fellow_trekkers += "<tr><td>"+element.ID+"</td><td>"+element.user_nicename+"</td><td>"+element.user_email+"</td><td>"+element.user_email+"</td></tr>";
+          });
+          this.meet_your_fellow_trekkers += "</table>";
+          this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.meet_your_fellow_trekkers).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
+        });
+      }
 
     } else {
       const checked = $event.target.checked;
       console.log(checked);
       this.userList.forEach(item => item.selected = checked);
       this.checkListId = [];
+
+      if (this.checked_user_email){
+        this.adminservice.getEmailText({emailId: this.checked_user_email}).subscribe((responseData: any[]) => {
+          this.meet_your_fellow_trekkers = "";
+          this.meet_your_fellow_trekkers += "<table><tr><th>Sl.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
+          this.checkListId.forEach(element => {
+            this.meet_your_fellow_trekkers += "<tr><td>"+element.ID+"</td><td>"+element.user_nicename+"</td><td>"+element.user_email+"</td><td>"+element.user_email+"</td></tr>";
+          });
+          this.meet_your_fellow_trekkers += "</table>";
+          this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.meet_your_fellow_trekkers).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
+        });
+      }
+
     }
     console.log(this.checkListId);
   }
@@ -152,16 +204,15 @@ export class EmailManagementComponent implements OnInit {
     this.postData = {
       emailId: event.value
     }
+    this.checked_user_email = event.value;
     this.adminservice.getEmailText(this.postData).subscribe((responseData: any[]) => {
-     
       this.meet_your_fellow_trekkers = "";
-      this.meet_your_fellow_trekkers += "<table style='width:100%;margin:20px;border-top:1px solid red;border-bottom: 1px solid red;padding:20px;'><tr><th>Sl.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
+      this.meet_your_fellow_trekkers += "<table><tr><th>Sl.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
       this.checkListId.forEach(element => {
-        this.meet_your_fellow_trekkers += "<tr><td style='border-top:1px solid red;border-bottom: 1px solid red;padding:20px;'>"+element.ID+"</td><td>"+element.user_nicename+"</td><td>"+element.user_email+"</td><td>"+element.user_email+"</td></tr>";
+        this.meet_your_fellow_trekkers += "<tr><td>"+element.ID+"</td><td>"+element.user_nicename+"</td><td>"+element.user_email+"</td><td>"+element.user_email+"</td></tr>";
       });
       this.meet_your_fellow_trekkers += "</table>";
       this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.meet_your_fellow_trekkers).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
-
     });
   }
 
