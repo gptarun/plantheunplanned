@@ -16,6 +16,7 @@ class Home extends CI_Controller
     {
         parent::__construct();
         $this->load->library(array('session'));
+        $this->load->library(array('csvreader'));
         $this->load->model('homemodel');
     }
 
@@ -321,5 +322,47 @@ class Home extends CI_Controller
             );
         }
         echo json_encode($return_data);
+    }
+
+    //import from csv
+    function csvImport()
+    {
+        $post = json_decode(file_get_contents("php://input"), true);
+        $file_name = $_POST['file_name'];
+        $result = $this->csvreader->parse_file($_FILES['csv']);
+        // echo "<pre>";
+        // var_dump($result);
+        // die;
+        $response = $this->processCsvImportData($file_name, $result);
+        echo $response;
+        $data_res['page_title'] = "User Order Data Uploaded Successfully";
+    }
+
+    //import csv
+    function processCsvImportData($data)
+    {
+        foreach ($data as $v) {
+            $insertArr = array(
+                'order_id' => $v['order_id'],
+                'product_name' => $v['product_name'],
+                'booking_date' => $v['booking_date'],
+                'user_name' => $v['user_name'],
+                'user_mob' => $v['user_mob'],
+                'user_email' => $v['user_email'],
+                'boarding_point' => $v['boarding_point'],
+                'quantity' => $v['quantity'],
+                'price' => $v['price'],
+                'subtotal' => $v['subtotal'],
+                'gst' => $v['gst'],
+                'payment_type' => $v['payment_type'],
+                'total' => $v['total'],
+            );
+
+            // echo "<pre>";
+            // var_dump($insertArr);
+            // die;
+            $res = $this->db->insert('user_orders', $insertArr);
+            return $res;
+        }
     }
 }

@@ -5,35 +5,38 @@
         <h4 class="card-title ">Import data</h4>
       </div>
       <div class="card-body">
-        <div style="margin-left: 1%;" class="row">
-          <div class="col-md-3">
-            <mat-form-field>
-              <mat-label>Select</mat-label>
-              <mat-select [(value)]="selected" [(ngModel)]="selectFilter">
-                <mat-option>None</mat-option>
-                <!-- Added table names here in value -->
-                <mat-option value="email_template">User Order</mat-option>
-                <mat-option value="trek_leader">Trek Leaders</mat-option>
-                <mat-option value="email_template">Email Templates</mat-option>
-              </mat-select>
-            </mat-form-field>
+        <form [formGroup]="formData" (ngSubmit)="onSubmit()">
+          <div style="margin-left: 1%;" class="row">
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-label>Select</mat-label>
+                <mat-select [(value)]="selected" [(ngModel)]="selectFilter" formControlName="file_name">
+                  <mat-option>None</mat-option>
+                  <!-- Added table names here in value -->
+                  <mat-option value="user_orders">User Order</mat-option>
+                  <mat-option value="trek_leader">Trek Leaders</mat-option>
+                  <mat-option value="email_template">Email Templates</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <input placeholder="Choose File" type="file" (change)="onFileChange($event)">
+            </div>
+            <div class="col-md-2">
+              <button mat-raised-button type="button" class="btn btn-info pull-right" style="float: left;">Download
+                Template</button>
+            </div>
           </div>
-          <div class="col-md-4">
-            <input placeholder="Choose File" type="file">
+          <div class="row">
+            <div class="col-md-2">
+              <button mat-raised-button type="submit" class="btn btn-info pull-right" style="float: left;">Import
+                Now</button>
+            </div>
+            <div class="col-md-1">
+              <a [routerLink]="['/addimport']" class="btn btn-info pull-right" style="color: white;">Add</a>
+            </div>
           </div>
-          <div class="col-md-2">
-            <button mat-raised-button type="submit" class="btn btn-info pull-right" style="float: left;">Download
-              Template</button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2">
-            <button mat-raised-button type="submit" class="btn btn-info pull-right" style="float: left;">Import Now</button>
-          </div>
-          <div class="col-md-1">
-            <a [routerLink]="['/addimport']" class="btn btn-info pull-right" style="color: white;">Add</a>
-          </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>
