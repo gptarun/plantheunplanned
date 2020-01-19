@@ -29,10 +29,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `email_template` (
-  `email_id` int(20) NOT NULL,
+  `email_id` int(20) NOT NULL AUTO_INCREMENT,
   `email_name` varchar(50) NOT NULL,
   `email_text` longtext DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+   PRIMARY KEY (email_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

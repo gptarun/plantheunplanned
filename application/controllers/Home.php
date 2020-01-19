@@ -329,40 +329,65 @@ class Home extends CI_Controller
     {
         $post = json_decode(file_get_contents("php://input"), true);
         $file_name = $_POST['file_name'];
-        $result = $this->csvreader->parse_file($_FILES['csv']);
-        // echo "<pre>";
-        // var_dump($result);
+        $result = $this->csvreader->parse_file($_FILES['csv']["tmp_name"]);
+        echo "<pre>";
+        var_dump($_FILES['csv']["tmp_name"]);
+        var_dump($result);
         // die;
         $response = $this->processCsvImportData($file_name, $result);
-        echo $response;
+        echo "<pre>";
+        var_dump($response);
         $data_res['page_title'] = "User Order Data Uploaded Successfully";
     }
 
     //import csv
-    function processCsvImportData($data)
+    function processCsvImportData($file_name, $data)
     {
-        foreach ($data as $v) {
-            $insertArr = array(
-                'order_id' => $v['order_id'],
-                'product_name' => $v['product_name'],
-                'booking_date' => $v['booking_date'],
-                'user_name' => $v['user_name'],
-                'user_mob' => $v['user_mob'],
-                'user_email' => $v['user_email'],
-                'boarding_point' => $v['boarding_point'],
-                'quantity' => $v['quantity'],
-                'price' => $v['price'],
-                'subtotal' => $v['subtotal'],
-                'gst' => $v['gst'],
-                'payment_type' => $v['payment_type'],
-                'total' => $v['total'],
-            );
-
-            // echo "<pre>";
-            // var_dump($insertArr);
-            // die;
-            $res = $this->db->insert('user_orders', $insertArr);
-            return $res;
+        if ($file_name == 'user_orders') {
+            foreach ($data as $v) {
+                $insertArr = array(
+                    'order_id' => $v['order_id'],
+                    'product_name' => $v['product_name'],
+                    'booking_date' => $v['booking_date'],
+                    'user_name' => $v['user_name'],
+                    'user_mob' => $v['user_mob'],
+                    'user_email' => $v['user_email'],
+                    'boarding_point' => $v['boarding_point'],
+                    'quantity' => $v['quantity'],
+                    'price' => $v['price'],
+                    'subtotal' => $v['subtotal'],
+                    'gst' => $v['gst'],
+                    'payment_type' => $v['payment_type'],
+                    'total' => $v['total'],
+                );
+                $res = $this->db->insert($file_name, $insertArr);
+            }
+            return true;
+        } else if ($file_name == 'trek_leader') {
+            foreach ($data as $v) {
+                $insertArr = array(
+                    'name' => $v['name'],
+                    'mobile' => $v['mobile'],
+                    'email' => $v['email'],
+                    'bio' => $v['bio'],
+                    'treks' => $v['treks'],
+                    't_size' => $v['t_size'],
+                    'upi' => $v['upi'],
+                    'banglore_address' => $v['banglore_address'],
+                    'is_active' => $v['is_active'],
+                );
+                $res = $this->db->insert($file_name, $insertArr);
+            }
+            return true;
+        } else if ($file_name == 'email_template') {
+            foreach ($data as $v) {
+                $insertArr = array(
+                    'email_name' => $v['email_name'],
+                    'email_text' => $v['email_text'],                 
+                );
+                $res = $this->db->insert($file_name, $insertArr);
+            }
+            return true;
         }
     }
 }

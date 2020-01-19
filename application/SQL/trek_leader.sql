@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `trek_leader` (
-  `leader_id` int(20) NOT NULL,
+  `leader_id` int(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `mobile` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -39,7 +39,8 @@ CREATE TABLE `trek_leader` (
   `t_size` varchar(100) NOT NULL,
   `banglore_address` mediumtext DEFAULT NULL,
   `is_active` varchar(50) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (leader_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -69,7 +70,7 @@ ALTER TABLE `trek_leader`
 -- AUTO_INCREMENT for table `trek_leader`
 --
 ALTER TABLE `trek_leader`
-  MODIFY `leader_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `leader_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
