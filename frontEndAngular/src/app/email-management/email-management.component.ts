@@ -12,6 +12,9 @@ declare var $: any;
   styleUrls: ['./email-management.component.scss']
 })
 export class EmailManagementComponent implements OnInit {
+
+  //Stores the selected trek leaders
+  selected = [];
   //Trek listing autocomplete
   trekValue = "";
   myTrekControl = new FormControl();
@@ -42,6 +45,7 @@ export class EmailManagementComponent implements OnInit {
   emailText = '';
   emailTemplate = '';
   meet_your_fellow_trekkers = "";
+  your_point_of_contact = "";
   checked_user_email = "";
 
   constructor(private adminservice: AdminserviceService) { }
@@ -106,15 +110,16 @@ export class EmailManagementComponent implements OnInit {
           this.checkListId.push(element);
           element.selected = event.target.checked;
 
-          if (this.checked_user_email){
-            this.adminservice.getEmailText({emailId: this.checked_user_email}).subscribe((responseData: any[]) => {
+          if (this.checked_user_email) {
+            this.adminservice.getEmailText({ emailId: this.checked_user_email }).subscribe((responseData: any[]) => {
               this.meet_your_fellow_trekkers = "";
-              this.meet_your_fellow_trekkers += "<table><tr><th>Sl.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
-              this.checkListId.forEach(element => {
-                this.meet_your_fellow_trekkers += "<tr><td>"+element.ID+"</td><td>"+element.user_nicename+"</td><td>"+element.user_email+"</td><td>"+element.user_email+"</td></tr>";
+              this.meet_your_fellow_trekkers += "<table border='1' cellpadding='0' cellspacing='0' dir='ltr'><tr><th>  Sr.No.  </th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
+              this.checkListId.forEach((element, $index) => {
+                $index++;
+                this.meet_your_fellow_trekkers += "<tr><td>" + $index + "</td><td>" + element.user_nicename + "</td><td>" + element.user_email + "</td><td>" + element.user_email + "</td></tr>";
               });
               this.meet_your_fellow_trekkers += "</table>";
-              this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.meet_your_fellow_trekkers).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
+              this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.your_point_of_contact).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
             });
           }
 
@@ -127,18 +132,19 @@ export class EmailManagementComponent implements OnInit {
           this.checkListId.splice(position, 1);
           element.selected = event.target.checked;
 
-          if (this.checked_user_email){
-            this.adminservice.getEmailText({emailId: this.checked_user_email}).subscribe((responseData: any[]) => {
+          if (this.checked_user_email) {
+            this.adminservice.getEmailText({ emailId: this.checked_user_email }).subscribe((responseData: any[]) => {
               this.meet_your_fellow_trekkers = "";
-              this.meet_your_fellow_trekkers += "<table><tr><th>Sl.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
-              this.checkListId.forEach(element => {
-                this.meet_your_fellow_trekkers += "<tr><td>"+element.ID+"</td><td>"+element.user_nicename+"</td><td>"+element.user_email+"</td><td>"+element.user_email+"</td></tr>";
+              this.meet_your_fellow_trekkers += "<table border='1' cellpadding='0' cellspacing='0' dir='ltr'><tr><th>  Sr.No.  </th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
+              this.checkListId.forEach((element, $index) => {
+                $index++;
+                this.meet_your_fellow_trekkers += "<tr><td>" + $index + "</td><td>" + element.user_nicename + "</td><td>" + element.user_email + "</td><td>" + element.user_email + "</td></tr>";
               });
               this.meet_your_fellow_trekkers += "</table>";
-              this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.meet_your_fellow_trekkers).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
+              this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.your_point_of_contact).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
             });
           }
-                    
+
         }
       }
     });
@@ -152,15 +158,16 @@ export class EmailManagementComponent implements OnInit {
       console.log(checked);
       this.userList.forEach(item => { item.selected = checked; this.checkListId.push(item); });
 
-      if (this.checked_user_email){
-        this.adminservice.getEmailText({emailId: this.checked_user_email}).subscribe((responseData: any[]) => {
+      if (this.checked_user_email) {
+        this.adminservice.getEmailText({ emailId: this.checked_user_email }).subscribe((responseData: any[]) => {
           this.meet_your_fellow_trekkers = "";
-          this.meet_your_fellow_trekkers += "<table><tr><th>Sl.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
-          this.checkListId.forEach(element => {
-            this.meet_your_fellow_trekkers += "<tr><td>"+element.ID+"</td><td>"+element.user_nicename+"</td><td>"+element.user_email+"</td><td>"+element.user_email+"</td></tr>";
+          this.meet_your_fellow_trekkers += "<table border='1' cellpadding='0' cellspacing='0' dir='ltr'><tr><th>Sr.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
+          this.checkListId.forEach((element, $index) => {
+            $index++;
+            this.meet_your_fellow_trekkers += "<tr><td>" + $index + "</td><td>" + element.user_nicename + "</td><td>" + element.user_email + "</td><td>" + element.user_email + "</td></tr>";
           });
           this.meet_your_fellow_trekkers += "</table>";
-          this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.meet_your_fellow_trekkers).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
+          this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.your_point_of_contact).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
         });
       }
 
@@ -170,15 +177,16 @@ export class EmailManagementComponent implements OnInit {
       this.userList.forEach(item => item.selected = checked);
       this.checkListId = [];
 
-      if (this.checked_user_email){
-        this.adminservice.getEmailText({emailId: this.checked_user_email}).subscribe((responseData: any[]) => {
+      if (this.checked_user_email) {
+        this.adminservice.getEmailText({ emailId: this.checked_user_email }).subscribe((responseData: any[]) => {
           this.meet_your_fellow_trekkers = "";
-          this.meet_your_fellow_trekkers += "<table><tr><th>Sl.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
-          this.checkListId.forEach(element => {
-            this.meet_your_fellow_trekkers += "<tr><td>"+element.ID+"</td><td>"+element.user_nicename+"</td><td>"+element.user_email+"</td><td>"+element.user_email+"</td></tr>";
+          this.meet_your_fellow_trekkers += "<table border='1' cellpadding='0' cellspacing='0' dir='ltr'><tr><th>Sr.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
+          this.checkListId.forEach((element, $index) => {
+            $index++;
+            this.meet_your_fellow_trekkers += "<tr><td>" + $index + "</td><td>" + element.user_nicename + "</td><td>" + element.user_email + "</td><td>" + element.user_email + "</td></tr>";
           });
           this.meet_your_fellow_trekkers += "</table>";
-          this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.meet_your_fellow_trekkers).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
+          this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.your_point_of_contact).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
         });
       }
 
@@ -207,12 +215,13 @@ export class EmailManagementComponent implements OnInit {
     this.checked_user_email = event.value;
     this.adminservice.getEmailText(this.postData).subscribe((responseData: any[]) => {
       this.meet_your_fellow_trekkers = "";
-      this.meet_your_fellow_trekkers += "<table><tr><th>Sl.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
-      this.checkListId.forEach(element => {
-        this.meet_your_fellow_trekkers += "<tr><td>"+element.ID+"</td><td>"+element.user_nicename+"</td><td>"+element.user_email+"</td><td>"+element.user_email+"</td></tr>";
+      this.meet_your_fellow_trekkers += "<table border='1' cellpadding='0' cellspacing='0' dir='ltr'><tr><th>  Sr.No.  </th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
+      this.checkListId.forEach((element, $index) => {
+        $index++;
+        this.meet_your_fellow_trekkers += "<tr><td>" + $index + "</td><td>" + element.user_nicename + "</td><td>" + element.user_email + "</td><td>" + element.user_email + "</td></tr>";
       });
       this.meet_your_fellow_trekkers += "</table>";
-      this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.meet_your_fellow_trekkers).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
+      this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.your_point_of_contact).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
     });
   }
 
@@ -223,7 +232,7 @@ export class EmailManagementComponent implements OnInit {
       emailBody: this.emailText,
       leaderEmail: this.leaderValue['email']
     }
-    this.adminservice.sendMail(this.postData).subscribe((responseData: any[]) => {     
+    this.adminservice.sendMail(this.postData).subscribe((responseData: any[]) => {
       if (responseData['status'] === 200) {
         this.showNotification('top', 'right', responseData['message'], true);
       } else {
@@ -235,6 +244,35 @@ export class EmailManagementComponent implements OnInit {
       }
     );
   }
+
+
+  getSelectedTrekLeaders() {
+    console.log(this.selected);
+    this.adminservice.getEmailText({ emailId: this.checked_user_email }).subscribe((responseData: any[]) => {
+      this.your_point_of_contact = "";
+      this.your_point_of_contact += "<table border='1' cellpadding='0' cellspacing='0' dir='ltr'><tr><th>Sr.No</th><th>Name</th><th>Contact</th><th>Bio</th></tr>";
+      this.selected.forEach((element, $index) => {
+        $index++;
+        this.your_point_of_contact += "<tr><td>" + $index + "</td><td>" + element.name + "</td><td>" + element.mobile + "</td><td>" + element.bio + "</td></tr>";
+      });
+      this.your_point_of_contact += "</table>";
+      this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.your_point_of_contact).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
+    });
+  }
+
+  // updateTemplate() {
+
+  //   this.adminservice.getEmailText({ emailId: this.checked_user_email }).subscribe((responseData: any[]) => {
+  //     this.meet_your_fellow_trekkers = "";
+  //     this.meet_your_fellow_trekkers += "<table border='1' cellpadding='0' cellspacing='0' dir='ltr'><tr><th>Sr.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
+  //     this.checkListId.forEach((element, $index) => {
+  //       this.meet_your_fellow_trekkers += "<tr><td>" + $index + "</td><td>" + element.user_nicename + "</td><td>" + element.user_email + "</td><td>" + element.user_email + "</td></tr>";
+  //     });
+  //     this.meet_your_fellow_trekkers += "</table>";
+  //     this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.your_point_of_contact).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
+  //   });
+  // }
+
   clearFilter() {
     this.selectFilter = '';
     this.searchValue = '';

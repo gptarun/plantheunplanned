@@ -17,6 +17,7 @@ import { MembershipManagementComponent } from '../../membership-management/membe
 import { SettingsComponent } from '../../settings/settings.component';
 import { AdduserComponent } from '../../user-management/adduser/adduser.component';
 import { EdituserComponent } from '../../user-management/edituser/edituser.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import {
   MatButtonModule,
@@ -53,7 +54,8 @@ import { AddimportComponent } from 'app/import/addimport/addimport.component';
     MatPaginatorModule,
     MatAutocompleteModule,
     MatDialogModule,
-    MatIconModule
+    MatIconModule,
+    NgSelectModule
   ],
   providers: [
     MatDatepickerModule,
@@ -74,7 +76,7 @@ import { AddimportComponent } from 'app/import/addimport/addimport.component';
     AdduserComponent,
     EdituserComponent,
     DeleteDialog,
-    EditTrekComponent, 
+    EditTrekComponent,
     ImportComponent,
     AddimportComponent
   ],

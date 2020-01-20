@@ -121,7 +121,9 @@
                   </mat-select>
                 </mat-form-field>
               </div>
-              <div class=" col-md-3">
+              <!-- 
+                As this is removed from the requirement. Now multiple trek leader is added
+                <div class=" col-md-3">
                 <mat-form-field class="example-full-width">
                   <input type="text" placeholder="Trek Leaders" aria-label="Trek Leaders" matInput
                     [formControl]="myControl" [matAutocomplete]="auto" [(ngModel)]="leaderValue">
@@ -131,6 +133,12 @@
                     </mat-option>
                   </mat-autocomplete>
                 </mat-form-field>
+              </div> -->
+
+              <div class=" col-md-3">
+                <ng-select [items]="options" bindLabel="name" placeholder="Select item" appendTo="body" multiple="true"
+                  [(ngModel)]="selected" (change)="getSelectedTrekLeaders()">
+                </ng-select>
               </div>
             </div>
             <div>
@@ -142,6 +150,9 @@
 
               <button mat-raised-button type="submit" class="btn btn-info pull-right"
                 [disabled]="emailText=='' || checkListId.length == 0" (click)="sendMail()">Send</button>
+
+              <!-- <button mat-raised-button type="submit" class="btn btn-info pull-right" [disabled]="emailText==''"
+                (click)="updateTemplate()">Preview</button> -->
             </div>
           </div>
         </div>
@@ -154,13 +165,13 @@
           <div class="card-header card-header-info">
             <h4 class="card-title ">Email Preview</h4>
           </div>
-          <div class="card-body">           
+          <div class="card-body">
             <div [innerHTML]="emailText">
             </div>
           </div>
         </div>
       </div>
     </div>
-    
+
   </div>
 </div>
