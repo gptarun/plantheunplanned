@@ -67,7 +67,7 @@ class EmailController extends CI_Controller
         $mail->Port = 587;
 
         $mail->SetFrom(GUSER, 'PlanTheUnplanned');
-        $mail->Subject = 'Testing';
+        $mail->Subject = $post["subject"];
         $mail->IsHTML(true);
         $mail->Body = $emailBody;
         foreach ($users as $value) {
@@ -76,7 +76,9 @@ class EmailController extends CI_Controller
         //$mail->AddAddress('tarung1201@gmail.com');
         if (isset($post["leaderEmail"])) {
             $leaderEmail = $post["leaderEmail"];
-            $mail->AddCC($leaderEmail);
+            foreach ($leaderEmail as $value) {
+                $mail->AddCC($value);
+            }
         }
 
         $mail->SMTPOptions = array(

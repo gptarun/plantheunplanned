@@ -14,7 +14,7 @@ declare var $: any;
 export class EmailManagementComponent implements OnInit {
 
   //Stores the selected trek leaders
-  selected = [];
+  selectedLeaders = [];
   //Trek listing autocomplete
   trekValue = "";
   myTrekControl = new FormControl();
@@ -28,6 +28,7 @@ export class EmailManagementComponent implements OnInit {
   options: any[] = [];
   filteredOptions: Observable<any[]>;
 
+  //Table data
   userList = [];
   selectFilter = '';
   searchValue = '';
@@ -40,13 +41,20 @@ export class EmailManagementComponent implements OnInit {
 
   checkListId = [];
 
+  //Email Data
   trekList = [];
   emailList = [];
   emailText = '';
-  emailTemplate = '';
+  emailTemplate = 0;
   meet_your_fellow_trekkers = "";
   your_point_of_contact = "";
   checked_user_email = "";
+  driveLink = "";
+  whatsappLink = "";
+  emailSubject = "";
+  boardingPoints = [];
+  trekImageUrl = "";
+  fileData = "";
 
   constructor(private adminservice: AdminserviceService) { }
 
@@ -111,16 +119,7 @@ export class EmailManagementComponent implements OnInit {
           element.selected = event.target.checked;
 
           if (this.checked_user_email) {
-            this.adminservice.getEmailText({ emailId: this.checked_user_email }).subscribe((responseData: any[]) => {
-              this.meet_your_fellow_trekkers = "";
-              this.meet_your_fellow_trekkers += "<table border='1' cellpadding='0' cellspacing='0' dir='ltr'><tr><th>  Sr.No.  </th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
-              this.checkListId.forEach((element, $index) => {
-                $index++;
-                this.meet_your_fellow_trekkers += "<tr><td>" + $index + "</td><td>" + element.user_nicename + "</td><td>" + element.user_email + "</td><td>" + element.user_email + "</td></tr>";
-              });
-              this.meet_your_fellow_trekkers += "</table>";
-              this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.your_point_of_contact).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
-            });
+            this.updateTemplate();
           }
 
         }
@@ -133,16 +132,7 @@ export class EmailManagementComponent implements OnInit {
           element.selected = event.target.checked;
 
           if (this.checked_user_email) {
-            this.adminservice.getEmailText({ emailId: this.checked_user_email }).subscribe((responseData: any[]) => {
-              this.meet_your_fellow_trekkers = "";
-              this.meet_your_fellow_trekkers += "<table border='1' cellpadding='0' cellspacing='0' dir='ltr'><tr><th>  Sr.No.  </th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
-              this.checkListId.forEach((element, $index) => {
-                $index++;
-                this.meet_your_fellow_trekkers += "<tr><td>" + $index + "</td><td>" + element.user_nicename + "</td><td>" + element.user_email + "</td><td>" + element.user_email + "</td></tr>";
-              });
-              this.meet_your_fellow_trekkers += "</table>";
-              this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.your_point_of_contact).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
-            });
+            this.updateTemplate();
           }
 
         }
@@ -155,39 +145,19 @@ export class EmailManagementComponent implements OnInit {
     if ($event.target.checked) {
       this.checkListId = [];
       const checked = $event.target.checked;
-      console.log(checked);
       this.userList.forEach(item => { item.selected = checked; this.checkListId.push(item); });
 
       if (this.checked_user_email) {
-        this.adminservice.getEmailText({ emailId: this.checked_user_email }).subscribe((responseData: any[]) => {
-          this.meet_your_fellow_trekkers = "";
-          this.meet_your_fellow_trekkers += "<table border='1' cellpadding='0' cellspacing='0' dir='ltr'><tr><th>Sr.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
-          this.checkListId.forEach((element, $index) => {
-            $index++;
-            this.meet_your_fellow_trekkers += "<tr><td>" + $index + "</td><td>" + element.user_nicename + "</td><td>" + element.user_email + "</td><td>" + element.user_email + "</td></tr>";
-          });
-          this.meet_your_fellow_trekkers += "</table>";
-          this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.your_point_of_contact).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
-        });
+        this.updateTemplate();
       }
 
     } else {
       const checked = $event.target.checked;
-      console.log(checked);
       this.userList.forEach(item => item.selected = checked);
       this.checkListId = [];
 
       if (this.checked_user_email) {
-        this.adminservice.getEmailText({ emailId: this.checked_user_email }).subscribe((responseData: any[]) => {
-          this.meet_your_fellow_trekkers = "";
-          this.meet_your_fellow_trekkers += "<table border='1' cellpadding='0' cellspacing='0' dir='ltr'><tr><th>Sr.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
-          this.checkListId.forEach((element, $index) => {
-            $index++;
-            this.meet_your_fellow_trekkers += "<tr><td>" + $index + "</td><td>" + element.user_nicename + "</td><td>" + element.user_email + "</td><td>" + element.user_email + "</td></tr>";
-          });
-          this.meet_your_fellow_trekkers += "</table>";
-          this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.your_point_of_contact).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
-        });
+        this.updateTemplate();
       }
 
     }
@@ -213,24 +183,31 @@ export class EmailManagementComponent implements OnInit {
       emailId: event.value
     }
     this.checked_user_email = event.value;
-    this.adminservice.getEmailText(this.postData).subscribe((responseData: any[]) => {
-      this.meet_your_fellow_trekkers = "";
-      this.meet_your_fellow_trekkers += "<table border='1' cellpadding='0' cellspacing='0' dir='ltr'><tr><th>  Sr.No.  </th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
-      this.checkListId.forEach((element, $index) => {
-        $index++;
-        this.meet_your_fellow_trekkers += "<tr><td>" + $index + "</td><td>" + element.user_nicename + "</td><td>" + element.user_email + "</td><td>" + element.user_email + "</td></tr>";
-      });
-      this.meet_your_fellow_trekkers += "</table>";
-      this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.your_point_of_contact).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
-    });
+    this.updateTemplate();
   }
 
   sendMail() {
+    if (this.emailList[this.emailTemplate - 1].email_name == 'Bon Voyage') {
+      this.emailSubject = this.emailList[this.emailTemplate - 1].email_name + '! ' + this.trekValue['post_title'];
+    } else {
+      this.emailSubject = this.emailList[this.emailTemplate - 1].email_name + ' Back!' + this.trekValue['post_title'];
+    }
+    var userEmails = [];
+    this.checkListId.forEach(element => {
+      userEmails.push(element.user_email);
+    });
+    var leadersList = [];
+    this.selectedLeaders.forEach(element => {
+      leadersList.push(element.email);
+    })
 
+    //Type will help in indentify which mail is coming from Angular and Wordpress
     this.postData = {
-      users: this.checkListId,
+      users: userEmails,
       emailBody: this.emailText,
-      leaderEmail: this.leaderValue['email']
+      leaderEmail: leadersList,
+      subject: this.emailSubject,
+      type: "custom"
     }
     this.adminservice.sendMail(this.postData).subscribe((responseData: any[]) => {
       if (responseData['status'] === 200) {
@@ -247,31 +224,64 @@ export class EmailManagementComponent implements OnInit {
 
 
   getSelectedTrekLeaders() {
-    console.log(this.selected);
-    this.adminservice.getEmailText({ emailId: this.checked_user_email }).subscribe((responseData: any[]) => {
-      this.your_point_of_contact = "";
-      this.your_point_of_contact += "<table border='1' cellpadding='0' cellspacing='0' dir='ltr'><tr><th>Sr.No</th><th>Name</th><th>Contact</th><th>Bio</th></tr>";
-      this.selected.forEach((element, $index) => {
-        $index++;
-        this.your_point_of_contact += "<tr><td>" + $index + "</td><td>" + element.name + "</td><td>" + element.mobile + "</td><td>" + element.bio + "</td></tr>";
-      });
-      this.your_point_of_contact += "</table>";
-      this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.your_point_of_contact).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
-    });
+    this.updateTemplate();
+  }
+  onDriveChange(value) {
+    if (value == '') {
+      this.driveLink = '';
+    } else {
+      this.driveLink = "href='" + value + "'";
+    }
+    this.updateTemplate();
+  }
+  onWasupChange(value) {
+    if (value == '') {
+      this.whatsappLink = '';
+    } else {
+      this.whatsappLink = "href='" + value + "'";
+    }
+    this.updateTemplate();
   }
 
-  // updateTemplate() {
+  onFileChange(event) {
 
-  //   this.adminservice.getEmailText({ emailId: this.checked_user_email }).subscribe((responseData: any[]) => {
-  //     this.meet_your_fellow_trekkers = "";
-  //     this.meet_your_fellow_trekkers += "<table border='1' cellpadding='0' cellspacing='0' dir='ltr'><tr><th>Sr.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
-  //     this.checkListId.forEach((element, $index) => {
-  //       this.meet_your_fellow_trekkers += "<tr><td>" + $index + "</td><td>" + element.user_nicename + "</td><td>" + element.user_email + "</td><td>" + element.user_email + "</td></tr>";
-  //     });
-  //     this.meet_your_fellow_trekkers += "</table>";
-  //     this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.your_point_of_contact).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers);
-  //   });
-  // }
+    if (event.target.files.length > 0) {
+      var reader: FileReader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]); // read file as data url
+
+      reader.onload = (event1) => { // called once readAsDataURL is completed
+        this.fileData = "src = '" + reader.result + "'";
+      }
+      this.updateTemplate();
+    } else {
+      this.fileData = "src = ''";
+      this.updateTemplate();
+    }
+  }
+
+  updateTemplate() {
+    this.adminservice.getEmailText({ emailId: this.checked_user_email }).subscribe((responseData: any[]) => {
+      this.meet_your_fellow_trekkers = "";
+      this.meet_your_fellow_trekkers += "<table border='1' cellpadding='0' cellspacing='0' dir='ltr'><colgroup><col width='50'><col width='145'><col width='200'><col width='150'></colgroup><tr><th>Sr.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
+      this.checkListId.forEach((element, $index) => {
+        $index++;
+        this.meet_your_fellow_trekkers += "<tr><td>" + $index + "</td><td>" + element.user_nicename + "</td><td>" + element.user_email + "</td><td>" + element.user_email + "</td></tr>";
+      });
+      this.meet_your_fellow_trekkers += "</table>";
+
+      if (this.selectedLeaders.length != 0) {
+        this.your_point_of_contact = "";
+        this.your_point_of_contact += "<table border='1' cellpadding='0' cellspacing='0' dir='ltr'><colgroup><col width='50'><col width='145'><col width='200'><col width='403'></colgroup><tr><th>Sr.No</th><th>Name</th><th>Contact</th><th>Bio</th></tr>";
+
+        this.selectedLeaders.forEach((element, $index) => {
+          $index++;
+          this.your_point_of_contact += "<tr><td>" + $index + "</td><td>" + element.name + "</td><td>" + element.mobile + "</td><td>" + element.bio + "</td></tr>";
+        });
+        this.your_point_of_contact += "</table>";
+      }
+      this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.your_point_of_contact).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers).replace("{{your_drive_link}}", this.driveLink).replace("{{your_whatsapp_url}}", this.whatsappLink).replace("{{your_trek_image}}", this.fileData);
+    });
+  }
 
   clearFilter() {
     this.selectFilter = '';

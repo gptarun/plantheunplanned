@@ -135,10 +135,28 @@
                 </mat-form-field>
               </div> -->
 
-              <div class=" col-md-3">
+              <div class=" col-md-9">
                 <ng-select [items]="options" bindLabel="name" placeholder="Select item" appendTo="body" multiple="true"
-                  [(ngModel)]="selected" (change)="getSelectedTrekLeaders()">
+                  [(ngModel)]="selectedLeaders" (change)="getSelectedTrekLeaders()">
                 </ng-select>
+              </div>
+            </div>
+            <div class="row" style="margin-left: 1%;">
+              <div class="col-md-5">
+                <mat-form-field class="example-full-width">
+                  <input type="text" placeholder="Drive Link" aria-label="Drive Link" matInput [(ngModel)]="driveLink"
+                    (input)="onDriveChange($event.target.value)">
+                </mat-form-field>
+              </div>
+
+              <div class=" col-md-4">
+                <mat-form-field class="example-full-width">
+                  <input type="text" placeholder="Whatsapp Link" aria-label="Whatsapp Link" matInput
+                    [(ngModel)]="whatsappLink" (input)="onWasupChange($event.target.value)">
+                </mat-form-field>
+              </div>
+              <div class="col-md-3">
+                <input placeholder="Choose Trek Image" type="file" (change)="onFileChange($event)">
               </div>
             </div>
             <div>
