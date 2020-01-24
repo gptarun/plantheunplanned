@@ -240,9 +240,14 @@ class Home extends CI_Controller
         echo json_encode($result);
     }
 
+
+
+
     public function getBookingTreks()
     {
         $post = json_decode(file_get_contents("php://input"), true);
+
+
         if (isset($post["from"])) {
             $fromDate = $post["from"];
             $fromDate = substr($fromDate, 0, 10);
@@ -262,7 +267,6 @@ class Home extends CI_Controller
         // echo $fromDate;
         // echo $toDate;
 
-
         //  echo json_encode("After filter");
         //  echo $fromDate;
         //  echo $toDate;
@@ -270,8 +274,7 @@ class Home extends CI_Controller
         $trekIDList = [];
         $result = $this->homemodel->getBookingTreks();
         foreach ($result as $value) {
-            //array_push($unserializeData, unserialize($value['meta_value']));
-            //echo json_encode($trekIDList);
+
             foreach (unserialize($value['meta_value']) as $newFields) {
                 $dbFrom = strtotime($newFields['from']);
                 $dbTo = strtotime($newFields['to']);
@@ -286,30 +289,70 @@ class Home extends CI_Controller
         }
         //echo json_encode($trekIDList);
         $responseObject = [];
+
+        $first_date = explode(',', $post["from"]);
+        $last_date = explode(',', $post["to"]);
+
+
         $filterTreks = $this->homemodel->getBookingTreksName($trekIDList);
-        foreach ($filterTreks as $value) {
-            $check = 0;
-            $responseTreksid = new stdClass();
+
+        $return_data = [];
+        $index = 0;
+        foreach ($filterTreks as $key => $value) {
+            if (isset($value['meta_key']) && $value['meta_key'] == 'name') {
+                $name = $value['meta_value'];
+                $post_id = $value['post_id'];
+            }
             if ($value['meta_key'] == 'tour_booking_periods') {
                 foreach (unserialize($value['meta_value']) as $newFields) {
-                    if ($fromDate <= $newFields['exact_dates'][0] && $toDate >= $newFields['exact_dates'][0]) {
-                        $check = 1;
-                        $responseTreksid->exact_dates->$newFields['exact_dates'][0];
+                    $datee = date("Y-m-d", strtotime($newFields['exact_dates'][0]));
+                    // echo $datee;
+                    // echo "\n"
+                    if ($first_date[0] <= $datee && $last_date[0] >= $datee) {
+                        // echo $datee;
+                        // echo "\n";
+                        $return_data[$index]['date'] = $datee;
+                        $return_data[$index]['id'] = $post_id;
+                        $return_data[$index]['name'] = $name;
+                        $index++;
                     }
                 }
             }
-            if ($value['meta_key'] == 'name') {
-                $responseTreksid->name = $value['meta_value'];
-            }
-            echo isset($responseTreksid->id);
-            $responseTreksid->id = $value['post_id'];
-
-            echo json_encode($responseTreksid);
-            if ($check == 1) {
-                array_push($responseObject, $responseTreksid);
-            }
         }
-        echo json_encode($responseObject);
+
+        // die();
+
+        return print json_encode($return_data);
+        // print_r($return_data);
+        // die();
+
+        // foreach ($filterTreks as $value) {
+        //     $check = 0;
+        //     $responseTreksid = new stdClass();
+        //     if ($value['meta_key'] == 'tour_booking_periods') {
+        //         foreach (unserialize($value['meta_value']) as $newFields) {
+        //             if ($fromDate <= $newFields['exact_dates'][0] && $toDate >= $newFields['exact_dates'][0]) {
+        //                 print_r($newFields);
+
+        //                 $check = 1;
+        //                 // $responseTreksid->exact_dates->$newFields['exact_dates'][0];
+        //             }
+        //         }
+        //     }
+        //     if ($value['meta_key'] == 'name') {
+        //         $responseTreksid->name = $value['meta_value'];
+        //     }
+        //     // echo isset($responseTreksid->id);
+        //     $responseTreksid->id = $value['post_id'];
+
+        //     // echo json_encode($responseTreksid);
+        //     if ($check == 1) {
+        //         array_push($responseObject, $responseTreksid);
+        //     }
+        // }
+        // print_r($responseObject);
+        // die();
+        // echo json_encode($responseObject);
     }
 
     public function getBillingInfo()
