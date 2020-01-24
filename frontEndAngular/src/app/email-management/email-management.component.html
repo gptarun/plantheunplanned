@@ -2,19 +2,28 @@
   <div class="container-fluid">
     <div class="card">
       <div class="row" style="margin-left: 1%;">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="dateValue"
-              (dateChange)="changeDate(dateValue)">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+            <input matInput [matDatepicker]="frompicker" placeholder="From date" [(ngModel)]="fromDateValue"
+              (dateChange)="changeFromDate(fromDateValue)">
+            <mat-datepicker-toggle matSuffix [for]="frompicker"></mat-datepicker-toggle>
+            <mat-datepicker #frompicker></mat-datepicker>
           </mat-form-field>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+          <mat-form-field>
+            <input matInput [matDatepicker]="topicker" placeholder="To date" [(ngModel)]="toDateValue"
+              (dateChange)="changeDate(toDateValue)">
+            <mat-datepicker-toggle matSuffix [for]="topicker"></mat-datepicker-toggle>
+            <mat-datepicker #topicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
           <mat-form-field class="example-full-width">
             <input type="text" placeholder="Select Trek " aria-label="Select Treks" matInput [(ngModel)]="trekValue"
               [formControl]="myTrekControl" [matAutocomplete]="auto1">
-            <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayFnTrek">
+            <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayFnTrek"
+              (optionSelected)="getBillingInfo($event.option.value.ID)">
               <mat-option *ngFor="let trekOptions of filteredTrekOptions | async" [value]="trekOptions">
                 {{trekOptions.post_title}}
               </mat-option>

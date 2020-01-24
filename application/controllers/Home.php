@@ -240,6 +240,63 @@ class Home extends CI_Controller
         echo json_encode($result);
     }
 
+    public function getBookingTreks()
+    {
+        $post = json_decode(file_get_contents("php://input"), true);
+        if (isset($post["from"])) {
+            $fromDate = $post["from"];
+            $fromDate = substr($fromDate, 0, 10);
+            $fromDate = strtotime($fromDate);
+        } else {
+            $fromDate = 0;
+        }
+        if (isset($post["to"])) {
+            $toDate = $post["to"];
+            $toDate = substr($toDate, 0, 10);
+            $toDate = strtotime($toDate);
+        } else {
+            $toDate = time();
+        }
+
+        // echo json_encode("Before filter");
+        // echo $fromDate;
+        // echo $toDate;
+
+
+        //  echo json_encode("After filter");
+        //  echo $fromDate;
+        //  echo $toDate;
+
+        $trekIDList = [];
+        $unserializeData = [];
+        $result = $this->homemodel->getBookingTreks();
+
+        foreach ($result as $value) {
+            array_push($unserializeData, unserialize($value['meta_value']));
+            //echo json_encode($trekIDList);
+            foreach (unserialize($value['meta_value']) as $newFields) {
+                $dbFrom = strtotime($newFields['from']);
+                $dbTo = strtotime($newFields['to']);
+                //echo json_encode($newFields['to']);
+                if ($fromDate <= $dbTo && $toDate >= $dbFrom) {
+                    array_push($trekIDList, $value['post_id']);
+                }
+                //  echo json_encode("After Search");
+                //  echo $dbFrom;
+                //  echo $dbTo;
+            }
+        }
+        //echo json_encode($trekIDList);
+        echo json_encode($this->homemodel->getBookingTreksName($trekIDList));
+    }
+
+    public function getBillingInfo()
+    {
+        $post = json_decode(file_get_contents("php://input"), true);
+        $productId = $post['id'];
+        echo json_encode($this->homemodel->getBillingInfo($productId));
+    }
+
     public function getEmailTemplates()
     {
         $result = $this->homemodel->getEmailTemplates();
@@ -383,7 +440,7 @@ class Home extends CI_Controller
             foreach ($data as $v) {
                 $insertArr = array(
                     'email_name' => $v['email_name'],
-                    'email_text' => $v['email_text'],                 
+                    'email_text' => $v['email_text'],
                 );
                 $res = $this->db->insert($file_name, $insertArr);
             }

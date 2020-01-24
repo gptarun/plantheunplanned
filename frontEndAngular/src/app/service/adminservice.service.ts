@@ -76,11 +76,18 @@ export class AdminserviceService {
     return this.http.post(environment.apiTarget + `/home/deletUser`, this.postData);
   }
 
+  getBillingInfo(trekID) {
+    this.postData = {
+      'id': trekID
+    }
+    return this.http.post(environment.apiTarget + `/home/getBillingInfo`, this.postData);
+  }
+
   getTrekLeaders() {
     return this.http.get(environment.apiTarget + `/home/getTrekLeaders`);
   }
   getTreksByDate(data) {
-    return this.http.post(environment.apiTarget + `/home/getTreksByDate`, data);
+    return this.http.post(environment.apiTarget + `/home/getBookingTreks`, data);
   }
   getEmailTemplates() {
     return this.http.get(environment.apiTarget + `/home/getEmailTemplates`);

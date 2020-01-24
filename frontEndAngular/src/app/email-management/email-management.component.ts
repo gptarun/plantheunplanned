@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminserviceService } from 'app/service/adminservice.service';
 import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, empty } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Key, element } from 'protractor';
 declare var $: any;
@@ -30,9 +30,12 @@ export class EmailManagementComponent implements OnInit {
 
   //Table data
   userList = [];
+  newUserList = {};
+  users = [];
   selectFilter = '';
   searchValue = '';
-  dateValue = new Date('');
+  toDateValue = new Date('');
+  fromDateValue = new Date('');
   previousPageIndex = 0;
   pageIndex = 0;
   pageSize = 10;
@@ -101,7 +104,34 @@ export class EmailManagementComponent implements OnInit {
   //These will be use for auto complete dropdown in Front end -> Trek list
   displayFnTrek(trek?: any): string | undefined {
     console.log(trek);
+    //need to fetch user details
     return trek ? trek.post_title : undefined;
+  }
+
+  getBillingInfo(ID: any) {
+    this.newUserList = {};
+    var count = 0;
+    this.adminservice.getBillingInfo(ID).subscribe((responseData: any[]) => {
+      //this.userList =
+      //console.log(responseData);
+      responseData.forEach(element => {
+        if (element.meta_key == "_order_key") {
+          if (this.newUserList != '') {
+            console.log(this.users);
+            this.users.push(this.newUserList);
+          }
+          this.newUserList = {};
+        }
+        if (element.meta_key == "_billing_first_name" || element.meta_key == "_billing_last_name" || element.meta_key == "_billing_email" || element.meta_key == "_billing_phone") {
+          this.newUserList[element.meta_key] = element.meta_value;
+          //console.log(element.meta_value);
+        }
+
+      });
+
+      console.log(this.users);
+    });
+
   }
 
   //These will be use for auto complete dropdown in Front end -> Trek list
@@ -166,14 +196,14 @@ export class EmailManagementComponent implements OnInit {
 
   searchUser() {
     //As date is comming in diffrent time zone which is giving one less day in IST (+5:30)
-    this.dateValue.setDate(this.dateValue.getDate() + 1);
+    this.toDateValue.setDate(this.toDateValue.getDate() + 1);
 
     this.postData = {
       offset: this.pageIndex,
       limit: this.pageSize,
       filter: this.selectFilter,
       search: this.searchValue,
-      date: this.dateValue
+      date: this.toDateValue
     }
     this.callUserApi(this.postData);
   }
@@ -286,7 +316,7 @@ export class EmailManagementComponent implements OnInit {
   clearFilter() {
     this.selectFilter = '';
     this.searchValue = '';
-    this.dateValue = new Date('');
+    this.toDateValue = new Date('');
     this.postData = {
       offset: this.pageIndex,
       limit: this.pageSize,
@@ -306,16 +336,17 @@ export class EmailManagementComponent implements OnInit {
       limit: event.pageSize,
       filter: this.selectFilter,
       search: this.searchValue,
-      date: this.dateValue
+      date: this.toDateValue
     }
     this.callUserApi(this.postData);
   }
 
   changeDate(eventDate) {
 
-    this.dateValue.setDate(eventDate.getDate() + 1);
+    this.toDateValue.setDate(eventDate.getDate() + 1);
     this.postData = {
-      date: this.dateValue
+      from: this.fromDateValue,
+      to: this.toDateValue
     }
     this.adminservice.getTreksByDate(this.postData).subscribe((responseData: any[]) => {
       this.trekOptions = responseData;
@@ -329,6 +360,22 @@ export class EmailManagementComponent implements OnInit {
     })
   }
 
+  changeFromDate(eventDate) {
+    this.fromDateValue.setDate(eventDate.getDate() + 1);
+    this.postData = {
+      from: this.fromDateValue
+    }
+    this.adminservice.getTreksByDate(this.postData).subscribe((responseData: any[]) => {
+      this.trekOptions = responseData;
+      this.trekList = responseData;
+      this.filteredTrekOptions = this.myTrekControl.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => typeof value === 'string' ? value : value.post_title),
+          map(post_title => post_title ? this._filterTrek(post_title) : this.trekOptions.slice())
+        );
+    })
+  }
   //Calling API to get user list with pagination
   callUserApi(postData) {
     postData.offset = postData.offset * postData.limit;

@@ -103,11 +103,25 @@ class Homemodel extends CI_Model
         return $this->db->select('email_id, email_name')->from('email_template')->get()->result_array();
     }
 
+    //This method will no longer be in use, as new logic will search the products tour_booking_periods
     public function getTreksByDate($date)
     {
         return $this->db->select('*')->from('wp_posts')->where("post_type = 'product' AND post_modified_gmt LIKE '%$date%'")->get()->result_array();
     }
 
+    public function getBookingTreks()
+    {
+        return $this->db->select('*')->from('wp_postmeta')->where("meta_key = 'tour_booking_periods'")->get()->result_array();
+    }
+    public function getBookingTreksName($trekIDList)
+    {
+        $idQueryList = '';
+        foreach ($trekIDList as $values) {
+            $idQueryList = $idQueryList . "'" . $values . "',";
+        }
+        $idQueryList = rtrim($idQueryList, ',');
+        return $this->db->select('ID, post_title')->from('wp_posts')->where("ID IN( $idQueryList )")->get()->result_array();
+    }
     public function getEmailText($email_id)
     {
         return $this->db->select('email_text')->from('email_template')->where("email_id = '$email_id'")->get()->result_array();
@@ -115,5 +129,12 @@ class Homemodel extends CI_Model
     public function getTrekById($id)
     {
         return $this->db->select('*')->from('wp_posts')->where("ID = '$id'")->get()->result_array();
+    }
+
+    public function getBillingInfo($productId)
+    {
+        $query = "SELECT * FROM wp_postmeta where post_id in(select order_id FROM wp_woocommerce_order_items where order_item_id in(SELECT order_item_id FROM wp_woocommerce_order_itemmeta where  meta_value =$productId))";
+        $result = $this->db->query($query);
+        return $result->result_array();
     }
 }
