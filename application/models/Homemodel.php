@@ -120,7 +120,7 @@ class Homemodel extends CI_Model
             $idQueryList = $idQueryList . "'" . $values . "',";
         }
         $idQueryList = rtrim($idQueryList, ',');
-        return $this->db->select('ID, post_title')->from('wp_posts')->where("ID IN( $idQueryList )")->get()->result_array();
+        return $this->db->select('*')->from('wp_postmeta')->where("post_id IN( $idQueryList )")->get()->result_array();
     }
     public function getEmailText($email_id)
     {
@@ -131,10 +131,14 @@ class Homemodel extends CI_Model
         return $this->db->select('*')->from('wp_posts')->where("ID = '$id'")->get()->result_array();
     }
 
+    public function getTrekInfo($productId){
+        return $this->db->select('*')->from('wp_postmeta')->where("post_id = $productId")->get()->result_array();
+    }
     public function getBillingInfo($productId)
     {
         $query = "SELECT * FROM wp_postmeta where post_id in(select order_id FROM wp_woocommerce_order_items where order_item_id in(SELECT order_item_id FROM wp_woocommerce_order_itemmeta where  meta_value =$productId))";
         $result = $this->db->query($query);
+
         return $result->result_array();
     }
 }

@@ -29,7 +29,6 @@ export class EmailManagementComponent implements OnInit {
   filteredOptions: Observable<any[]>;
 
   //Table data
-  userList = [];
   newUserList = {};
   users = [];
   selectFilter = '';
@@ -41,6 +40,7 @@ export class EmailManagementComponent implements OnInit {
   pageSize = 10;
   length = 0;
   postData = {};
+  trekDate = 0;
 
   checkListId = [];
 
@@ -76,15 +76,6 @@ export class EmailManagementComponent implements OnInit {
     this.adminservice.getEmailTemplates().subscribe((responseData: any[]) => {
       this.emailList = responseData;
     });
-
-    this.postData = {
-      offset: this.pageIndex,
-      limit: this.pageSize,
-      filter: this.selectFilter,
-      search: this.searchValue,
-      date: ''
-    }
-    this.callUserApi(this.postData);
   }
 
   //These will be use for auto complete dropdown in Front end -> Trek Leader list
@@ -108,23 +99,25 @@ export class EmailManagementComponent implements OnInit {
     return trek ? trek.post_title : undefined;
   }
 
-  getBillingInfo(ID: any) {
+  getBillingInfo(ID: any, from, to) {
     this.newUserList = {};
     var count = 0;
-    this.adminservice.getBillingInfo(ID).subscribe((responseData: any[]) => {
-      //this.userList =
-      //console.log(responseData);
-      responseData.forEach(element => {
-        if (element.meta_key == "_order_key") {
-          if (this.newUserList != '') {
-            console.log(this.users);
-            this.users.push(this.newUserList);
-          }
-          this.newUserList = {};
-        }
-        if (element.meta_key == "_billing_first_name" || element.meta_key == "_billing_last_name" || element.meta_key == "_billing_email" || element.meta_key == "_billing_phone") {
+    this.users = [];
+    this.adminservice.getBillingInfo(ID, from, to).subscribe((responseData: any[]) => {
+      this.trekDate = responseData[0];
+      responseData[1].forEach((element, index) => {
+
+        if (element.meta_key == "_billing_first_name" || element.meta_key == "_billing_last_name" || element.meta_key == "_billing_email"
+          || element.meta_key == "_billing_phone") {
           this.newUserList[element.meta_key] = element.meta_value;
           //console.log(element.meta_value);
+        }
+        if (element.meta_key == "_transaction_id") {
+          this.newUserList['ID'] = count;
+          this.newUserList['selected'] = false;
+          this.users.push(this.newUserList);
+          this.newUserList = {};
+          count++;
         }
 
       });
@@ -142,7 +135,7 @@ export class EmailManagementComponent implements OnInit {
 
   //Check & Uncheck user
   checkUser(event, id) {
-    this.userList.forEach(element => {
+    this.users.forEach(element => {
       if (id == element.ID) {
         if (event.target.checked) {
           this.checkListId.push(element);
@@ -175,7 +168,7 @@ export class EmailManagementComponent implements OnInit {
     if ($event.target.checked) {
       this.checkListId = [];
       const checked = $event.target.checked;
-      this.userList.forEach(item => { item.selected = checked; this.checkListId.push(item); });
+      this.users.forEach(item => { item.selected = checked; this.checkListId.push(item); });
 
       if (this.checked_user_email) {
         this.updateTemplate();
@@ -183,7 +176,7 @@ export class EmailManagementComponent implements OnInit {
 
     } else {
       const checked = $event.target.checked;
-      this.userList.forEach(item => item.selected = checked);
+      this.users.forEach(item => item.selected = checked);
       this.checkListId = [];
 
       if (this.checked_user_email) {
@@ -192,20 +185,6 @@ export class EmailManagementComponent implements OnInit {
 
     }
     console.log(this.checkListId);
-  }
-
-  searchUser() {
-    //As date is comming in diffrent time zone which is giving one less day in IST (+5:30)
-    this.toDateValue.setDate(this.toDateValue.getDate() + 1);
-
-    this.postData = {
-      offset: this.pageIndex,
-      limit: this.pageSize,
-      filter: this.selectFilter,
-      search: this.searchValue,
-      date: this.toDateValue
-    }
-    this.callUserApi(this.postData);
   }
 
   selectEmail(event) {
@@ -295,7 +274,7 @@ export class EmailManagementComponent implements OnInit {
       this.meet_your_fellow_trekkers += "<table border='1' cellpadding='0' cellspacing='0' dir='ltr'><colgroup><col width='50'><col width='145'><col width='200'><col width='150'></colgroup><tr><th>Sr.No</th><th>Name</th><th>Boarding Point</th><th>Contact</th></tr>";
       this.checkListId.forEach((element, $index) => {
         $index++;
-        this.meet_your_fellow_trekkers += "<tr><td>" + $index + "</td><td>" + element.user_nicename + "</td><td>" + element.user_email + "</td><td>" + element.user_email + "</td></tr>";
+        this.meet_your_fellow_trekkers += "<tr><td>" + $index + "</td><td>" + element._billing_first_name + ' ' + element._billing_last_name + "</td><td>" + element.user_email + "</td><td>" + element._billing_email + "</td></tr>";
       });
       this.meet_your_fellow_trekkers += "</table>";
 
@@ -317,6 +296,7 @@ export class EmailManagementComponent implements OnInit {
     this.selectFilter = '';
     this.searchValue = '';
     this.toDateValue = new Date('');
+    this.users = [];
     this.postData = {
       offset: this.pageIndex,
       limit: this.pageSize,
@@ -326,20 +306,19 @@ export class EmailManagementComponent implements OnInit {
     }
     this.trekValue = '';
     this.trekOptions = [];
-    this.callUserApi(this.postData);
   }
 
   //Creating manual pagination to load data faster
-  setPaginaton(event) {
-    this.postData = {
-      offset: event.pageIndex,
-      limit: event.pageSize,
-      filter: this.selectFilter,
-      search: this.searchValue,
-      date: this.toDateValue
-    }
-    this.callUserApi(this.postData);
-  }
+  // setPaginaton(event) {
+  //   this.postData = {
+  //     offset: event.pageIndex,
+  //     limit: event.pageSize,
+  //     filter: this.selectFilter,
+  //     search: this.searchValue,
+  //     date: this.toDateValue
+  //   }
+  //   this.callUserApi(this.postData);
+  // }
 
   changeDate(eventDate) {
 
@@ -376,24 +355,24 @@ export class EmailManagementComponent implements OnInit {
         );
     })
   }
-  //Calling API to get user list with pagination
-  callUserApi(postData) {
-    postData.offset = postData.offset * postData.limit;
-    this.checkListId = [];
-    this.adminservice.getUsersCount(postData).subscribe((responseData: any[]) => {
-      this.length = responseData[0].total;
-    }
-    );
+  // //Calling API to get user list with pagination
+  // callUserApi(postData) {
+  //   postData.offset = postData.offset * postData.limit;
+  //   this.checkListId = [];
+  //   this.adminservice.getUsersCount(postData).subscribe((responseData: any[]) => {
+  //     this.length = responseData[0].total;
+  //   }
+  //   );
 
-    this.adminservice.getUsers(postData).subscribe((responseData: any[]) => {
-      this.userList = responseData;
-      this.userList.forEach(element => {
-        element.selected = false;
-      });
-    }
-    );
+  //   this.adminservice.getUsers(postData).subscribe((responseData: any[]) => {
+  //     this.userList = responseData;
+  //     this.userList.forEach(element => {
+  //       element.selected = false;
+  //     });
+  //   }
+  //   );
 
-  }
+  // }
 
 
   showNotification(from, align, message, status) {

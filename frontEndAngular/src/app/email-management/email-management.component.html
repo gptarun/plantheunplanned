@@ -23,7 +23,7 @@
             <input type="text" placeholder="Select Trek " aria-label="Select Treks" matInput [(ngModel)]="trekValue"
               [formControl]="myTrekControl" [matAutocomplete]="auto1">
             <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayFnTrek"
-              (optionSelected)="getBillingInfo($event.option.value.ID)">
+              (optionSelected)="getBillingInfo($event.option.value.ID,fromDateValue,toDateValue )">
               <mat-option *ngFor="let trekOptions of filteredTrekOptions | async" [value]="trekOptions">
                 {{trekOptions.post_title}}
               </mat-option>
@@ -46,7 +46,7 @@
             <h4 class="card-title ">Users</h4>
           </div>
           <div class="card-body">
-            <div [hidden]="trekValue != '' && userList.length > 0">
+            <div [hidden]="trekValue != '' && users.length > 0">
               <p>No Trek is Selected!</p>
             </div>
             <div class="table-responsive" [hidden]="trekValue == ''">
@@ -70,17 +70,16 @@
                   <th>Name</th>
                   <th>Email</th>
                   <th>Mobile</th>
-                  <th>Email</th>
-                  <th>Trek Name</th>
+                  <!-- <th>Trek Name</th> -->
                   <th>Trek Date</th>
                   <th>Boarding Point</th>
                 </thead>
-                <tbody *ngFor="let item of userList">
+                <tbody *ngFor="let item of users ; let i = index">
                   <tr>
                     <td>
                       <div class="row">
                         <div class="col-md-6">
-                          {{item.ID}}
+                          {{ i + 1 }}
                         </div>
                         <div class="form-check col-md-6">
                           <label class="form-check-label">
@@ -93,20 +92,18 @@
                         </div>
                       </div>
                     </td>
-                    <td>{{item.user_nicename}}</td>
-                    <td>{{item.user_email}}</td>
-                    <td>{{item.mobile}}</td>
-                    <td>{{item.membershipDate}}</td>
+                    <td>{{item._billing_first_name}} {{item._billing_last_name}}</td>
+                    <td>{{item._billing_email}}</td>
+                    <td>{{item._billing_phone}}</td>
+                    <td>{{trekDate}}</td>
                     <td>{{item.selected}}</td>
-                    <td>{{item.membershipType}}</td>
-                    <td>{{item.membershipType}}</td>
                   </tr>
                 </tbody>
               </table>
 
-              <mat-paginator [length]="length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
+              <!-- <mat-paginator [length]="length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
                 (page)="pageEvent = setPaginaton($event)">
-              </mat-paginator>
+              </mat-paginator> -->
             </div>
           </div>
         </div>

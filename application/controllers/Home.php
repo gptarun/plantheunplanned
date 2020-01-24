@@ -268,11 +268,9 @@ class Home extends CI_Controller
         //  echo $toDate;
 
         $trekIDList = [];
-        $unserializeData = [];
         $result = $this->homemodel->getBookingTreks();
-
         foreach ($result as $value) {
-            array_push($unserializeData, unserialize($value['meta_value']));
+            //array_push($unserializeData, unserialize($value['meta_value']));
             //echo json_encode($trekIDList);
             foreach (unserialize($value['meta_value']) as $newFields) {
                 $dbFrom = strtotime($newFields['from']);
@@ -287,14 +285,67 @@ class Home extends CI_Controller
             }
         }
         //echo json_encode($trekIDList);
-        echo json_encode($this->homemodel->getBookingTreksName($trekIDList));
+        $responseObject = [];
+        $filterTreks = $this->homemodel->getBookingTreksName($trekIDList);
+        foreach ($filterTreks as $value) {
+            $check = 0;
+            $responseTreksid = new stdClass();
+            if ($value['meta_key'] == 'tour_booking_periods') {
+                foreach (unserialize($value['meta_value']) as $newFields) {
+                    if ($fromDate <= $newFields['exact_dates'][0] && $toDate >= $newFields['exact_dates'][0]) {
+                        $check = 1;
+                        $responseTreksid->exact_dates->$newFields['exact_dates'][0];
+                    }
+                }
+            }
+            if ($value['meta_key'] == 'name') {
+                $responseTreksid->name = $value['meta_value'];
+            }
+            echo isset($responseTreksid->id);
+            $responseTreksid->id = $value['post_id'];
+
+            echo json_encode($responseTreksid);
+            if ($check == 1) {
+                array_push($responseObject, $responseTreksid);
+            }
+        }
+        echo json_encode($responseObject);
     }
 
     public function getBillingInfo()
     {
         $post = json_decode(file_get_contents("php://input"), true);
+        $responseObject = [];
         $productId = $post['id'];
-        echo json_encode($this->homemodel->getBillingInfo($productId));
+        if (isset($post["from"])) {
+            $fromDate = $post["from"];
+            $fromDate = substr($fromDate, 0, 10);
+            $fromDate = strtotime($fromDate);
+        } else {
+            $fromDate = 0;
+        }
+        if (isset($post["to"])) {
+            $toDate = $post["to"];
+            $toDate = substr($toDate, 0, 10);
+            $toDate = strtotime($toDate);
+        } else {
+            $toDate = time();
+        }
+
+        $trekInfo = $this->homemodel->getTrekInfo($productId);
+        $this->homemodel->getBillingInfo($productId);
+        foreach ($trekInfo as $value) {
+            if ($value['meta_key'] == 'tour_booking_periods') {
+                foreach (unserialize($value['meta_value']) as $newFields) {
+                    $dbExactDate = strtotime($newFields['exact_dates'][0]);
+                    if ($fromDate <= $dbExactDate && $toDate >= $dbExactDate) {
+                        array_push($responseObject, $newFields['exact_dates'][0]);
+                    }
+                }
+            }
+        }
+        array_push($responseObject, $this->homemodel->getBillingInfo($productId));
+        echo json_encode($responseObject);
     }
 
     public function getEmailTemplates()

@@ -76,9 +76,11 @@ export class AdminserviceService {
     return this.http.post(environment.apiTarget + `/home/deletUser`, this.postData);
   }
 
-  getBillingInfo(trekID) {
+  getBillingInfo(trekID, from, to) {
     this.postData = {
-      'id': trekID
+      'id': trekID,
+      'from': from,
+      'to': to
     }
     return this.http.post(environment.apiTarget + `/home/getBillingInfo`, this.postData);
   }
