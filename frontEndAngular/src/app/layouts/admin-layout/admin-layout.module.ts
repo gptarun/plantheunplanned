@@ -18,6 +18,7 @@ import { SettingsComponent } from '../../settings/settings.component';
 import { AdduserComponent } from '../../user-management/adduser/adduser.component';
 import { EdituserComponent } from '../../user-management/edituser/edituser.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 import {
   MatButtonModule,
@@ -55,7 +56,8 @@ import { AddimportComponent } from 'app/import/addimport/addimport.component';
     MatAutocompleteModule,
     MatDialogModule,
     MatIconModule,
-    NgSelectModule
+    NgSelectModule,
+    AngularEditorModule 
   ],
   providers: [
     MatDatepickerModule,

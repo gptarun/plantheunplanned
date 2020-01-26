@@ -4,6 +4,7 @@ import { FormControl } from '@angular/forms';
 import { Observable, empty } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Key, element } from 'protractor';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 declare var $: any;
 
 @Component({
@@ -13,6 +14,51 @@ declare var $: any;
 })
 export class EmailManagementComponent implements OnInit {
 
+  //HTML Editor
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: 'auto',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Enter text here...',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    fonts: [
+      { class: 'arial', name: 'Arial' },
+      { class: 'times-new-roman', name: 'Times New Roman' },
+      { class: 'calibri', name: 'Calibri' },
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' }
+    ],
+    customClasses: [
+      {
+        name: 'quote',
+        class: 'quote',
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: 'titleText',
+        class: 'titleText',
+        tag: 'h1',
+      },
+    ],
+    uploadUrl: 'v1/image',
+    sanitize: true,
+    toolbarPosition: 'top',
+    toolbarHiddenButtons: [
+      ['bold', 'italic'],
+      ['fontSize']
+    ]
+  };
   //Stores the selected trek leaders
   selectedLeaders = [];
   //Trek listing autocomplete
@@ -99,14 +145,14 @@ export class EmailManagementComponent implements OnInit {
     return trek ? trek.post_title : undefined;
   }
 
-  getBillingInfo(ID: any, from, to) {
+  getBillingInfo(ID: any, exactDate) {
     this.newUserList = {};
     var count = 0;
     this.users = [];
-    console.log(ID, from, to);
-    this.adminservice.getBillingInfo(ID, from, to).subscribe((responseData: any[]) => {
-      this.trekDate = responseData[0];
-      responseData[1].forEach((element, index) => {
+    console.log(ID, exactDate);
+    this.adminservice.getBillingInfo(ID, exactDate).subscribe((responseData: any[]) => {
+      this.trekDate = exactDate;
+      responseData[0].forEach((element, index) => {
 
         if (element.meta_key == "_billing_first_name" || element.meta_key == "_billing_last_name" || element.meta_key == "_billing_email"
           || element.meta_key == "_billing_phone") {
@@ -196,16 +242,22 @@ export class EmailManagementComponent implements OnInit {
     this.updateTemplate();
   }
 
-  sendMail() {
+  sendMail(key) {
     if (this.emailList[this.emailTemplate - 1].email_name == 'Bon Voyage') {
       this.emailSubject = this.emailList[this.emailTemplate - 1].email_name + '! ' + this.trekValue['post_title'];
     } else {
       this.emailSubject = this.emailList[this.emailTemplate - 1].email_name + ' Back!' + this.trekValue['post_title'];
     }
     var userEmails = [];
-    this.checkListId.forEach(element => {
-      userEmails.push(element.user_email);
-    });
+    if (key == 'test') {
+      userEmails.push('tarung1201@gmail.com');
+      //userEmails.push('sayhello@plantheunplanned.com');
+    } else {
+      var userEmails = [];
+      this.checkListId.forEach(element => {
+        userEmails.push(element._billing_email);
+      });
+    }
     var leadersList = [];
     this.selectedLeaders.forEach(element => {
       leadersList.push(element.email);
@@ -289,7 +341,7 @@ export class EmailManagementComponent implements OnInit {
         });
         this.your_point_of_contact += "</table>";
       }
-      this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.your_point_of_contact).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers).replace("{{your_drive_link}}", this.driveLink).replace("{{your_whatsapp_url}}", this.whatsappLink).replace("{{your_trek_image}}", this.fileData);
+      this.emailText = responseData[0].email_text.replace("{{your_point_of_contact}}", this.your_point_of_contact).replace("{{meet_your_fellow_trekkers}}", this.meet_your_fellow_trekkers).replace("{{your_drive_link}}", this.driveLink).replace("{{your_whatsapp_url}}", this.whatsappLink).replace("{{your_trek_image}}", this.fileData).replace("{{your_trek_date}}", this.trekDate).replace("{{your_trek_date}}", this.trekDate);
     });
   }
 

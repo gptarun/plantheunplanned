@@ -361,19 +361,12 @@ class Home extends CI_Controller
         $post = json_decode(file_get_contents("php://input"), true);
         $responseObject = [];
         $productId = $post['id'];
-        if (isset($post["from"])) {
-            $fromDate = $post["from"];
+        if (isset($post["exactDate"])) {
+            $fromDate = $post["exactDate"];
             $fromDate = substr($fromDate, 0, 10);
             $fromDate = strtotime($fromDate);
         } else {
-            $fromDate = 0;
-        }
-        if (isset($post["to"])) {
-            $toDate = $post["to"];
-            $toDate = substr($toDate, 0, 10);
-            $toDate = strtotime($toDate);
-        } else {
-            $toDate = time();
+            $fromDate = time();
         }
 
         $trekInfo = $this->homemodel->getTrekInfo($productId);
@@ -382,8 +375,8 @@ class Home extends CI_Controller
             if ($value['meta_key'] == 'tour_booking_periods') {
                 foreach (unserialize($value['meta_value']) as $newFields) {
                     $dbExactDate = strtotime($newFields['exact_dates'][0]);
-                    if ($fromDate <= $dbExactDate && $toDate >= $dbExactDate) {
-                        array_push($responseObject, $newFields['exact_dates'][0]);
+                    if ($fromDate == $dbExactDate) {
+                        //array_push($responseObject, $newFields['exact_dates'][0]);
                     }
                 }
             }

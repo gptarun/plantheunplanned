@@ -78,8 +78,10 @@ class EmailController extends CI_Controller
             $leaderEmail = $post["leaderEmail"];
             foreach ($leaderEmail as $value) {
                 $mail->AddCC($value);
+               
             }
         }
+        $mail->AddCC(GUSER);
 
         $mail->SMTPOptions = array(
             'ssl' => array(

@@ -23,7 +23,7 @@
             <input type="text" placeholder="Select Trek " aria-label="Select Treks" matInput [(ngModel)]="trekValue"
               [formControl]="myTrekControl" [matAutocomplete]="auto1">
             <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayFnTrek"
-              (optionSelected)="getBillingInfo($event.option.value.id,fromDateValue,toDateValue )">
+              (optionSelected)="getBillingInfo($event.option.value.id, $event.option.value.date )">
               <mat-option *ngFor="let trekOptions of filteredTrekOptions | async" [value]="trekOptions">
                 {{trekOptions.post_title}} {{trekOptions.date}}
               </mat-option>
@@ -162,23 +162,23 @@
             </div>
             <div>
               <div class="col-md-12">
-                <mat-form-field class="example-full-width">
+                <angular-editor [placeholder]="'Select an Email Template..'" [(ngModel)]="emailText"></angular-editor>
+                <!-- <mat-form-field class="example-full-width">
                   <textarea matInput placeholder="Your Email template" rows="20" [(ngModel)]="emailText"></textarea>
-                </mat-form-field>
+                </mat-form-field> -->
               </div>
-
               <button mat-raised-button type="submit" class="btn btn-info pull-right"
-                [disabled]="emailText=='' || checkListId.length == 0" (click)="sendMail()">Send</button>
+                [disabled]="emailText=='' || checkListId.length == 0" (click)="sendMail('prod')">Send</button>
 
-              <!-- <button mat-raised-button type="submit" class="btn btn-info pull-right" [disabled]="emailText==''"
-                (click)="updateTemplate()">Preview</button> -->
+                <button mat-raised-button type="submit" class="btn btn-info pull-right"
+                [disabled]="emailText==''" (click)="sendMail('test')">Test Mail</button>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-info">
@@ -190,7 +190,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
   </div>
 </div>
