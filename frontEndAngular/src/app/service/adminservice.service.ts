@@ -82,6 +82,7 @@ export class AdminserviceService {
       'from': from,
       'to': to
     }
+    console.log(this.postData);
     return this.http.post(environment.apiTarget + `/home/getBillingInfo`, this.postData);
   }
 

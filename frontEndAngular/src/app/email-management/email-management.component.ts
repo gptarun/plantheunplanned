@@ -103,6 +103,7 @@ export class EmailManagementComponent implements OnInit {
     this.newUserList = {};
     var count = 0;
     this.users = [];
+    console.log(ID, from, to);
     this.adminservice.getBillingInfo(ID, from, to).subscribe((responseData: any[]) => {
       this.trekDate = responseData[0];
       responseData[1].forEach((element, index) => {
@@ -321,8 +322,8 @@ export class EmailManagementComponent implements OnInit {
   // }
 
   changeDate(eventDate) {
-
     this.toDateValue.setDate(eventDate.getDate() + 1);
+    this.fromDateValue.setDate(eventDate.getDate() + 1);
     this.postData = {
       from: this.fromDateValue,
       to: this.toDateValue

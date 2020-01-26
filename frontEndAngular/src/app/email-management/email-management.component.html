@@ -23,19 +23,14 @@
             <input type="text" placeholder="Select Trek " aria-label="Select Treks" matInput [(ngModel)]="trekValue"
               [formControl]="myTrekControl" [matAutocomplete]="auto1">
             <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayFnTrek"
-              (optionSelected)="getBillingInfo($event.option.value.ID,fromDateValue,toDateValue )">
+              (optionSelected)="getBillingInfo($event.option.value.id,fromDateValue,toDateValue )">
               <mat-option *ngFor="let trekOptions of filteredTrekOptions | async" [value]="trekOptions">
-                {{trekOptions.post_title}}
+                {{trekOptions.post_title}} {{trekOptions.date}}
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
         </div>
-        <!-- <div class="col-md-3">
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="Enter your value" [(ngModel)]="searchValue">
-          </mat-form-field>
-        </div> -->
-        <!-- <button mat-raised-button type="submit" class="btn btn-info pull-right" (click)="searchUser()">Search</button> -->
+
         <button mat-raised-button type="submit" class="btn pull-right" (click)="clearFilter()">Clear</button>
       </div>
     </div>

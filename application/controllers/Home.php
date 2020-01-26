@@ -299,30 +299,31 @@ class Home extends CI_Controller
         $return_data = [];
         $index = 0;
         foreach ($filterTreks as $key => $value) {
-            if (isset($value['meta_key']) && $value['meta_key'] == 'name') {
-                $name = $value['meta_value'];
-                $post_id = $value['post_id'];
-            }
             if ($value['meta_key'] == 'tour_booking_periods') {
                 foreach (unserialize($value['meta_value']) as $newFields) {
                     $datee = date("Y-m-d", strtotime($newFields['exact_dates'][0]));
                     // echo $datee;
                     // echo "\n"
                     if ($first_date[0] <= $datee && $last_date[0] >= $datee) {
-                        // echo $datee;
                         // echo "\n";
                         $return_data[$index]['date'] = $datee;
-                        $return_data[$index]['id'] = $post_id;
-                        $return_data[$index]['name'] = $name;
-                        $index++;
                     }
+                }
+            }
+            if (isset($value['meta_key']) && $value['meta_key'] == 'name') {
+                if (isset($return_data[$index]['date'])) {
+                    $name = $value['meta_value'];
+                    $post_id = $value['post_id'];
+                    $return_data[$index]['id'] = $post_id;
+                    $return_data[$index]['post_title'] = $name;
+                    $index++;
                 }
             }
         }
 
         // die();
 
-        return print json_encode($return_data);
+        echo json_encode($return_data);
         // print_r($return_data);
         // die();
 
