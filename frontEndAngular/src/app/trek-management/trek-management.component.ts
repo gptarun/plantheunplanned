@@ -10,8 +10,9 @@ import { Router } from "@angular/router";
 export class TrekManagementComponent implements OnInit {
 
   trekList = [];
-  dateValue = new Date('');
   postData = {};
+  toDateValue = new Date('');
+  fromDateValue = new Date('');
 
   constructor(private router: Router, private adminservice: AdminserviceService) { }
 
@@ -20,19 +21,28 @@ export class TrekManagementComponent implements OnInit {
 
 
   changeDate(eventDate) {
-
-    this.dateValue.setDate(eventDate.getDate() + 1);
     this.postData = {
-      date: this.dateValue
+      from: this.fromDateValue,
+      to: this.toDateValue
     }
     this.adminservice.getTreksByDate(this.postData).subscribe((responseData: any[]) => {
       this.trekList = responseData;
     })
   }
 
-  editTrek(trek){
+  changeFromDate(eventDate) {
+    this.postData = {
+      from: this.fromDateValue,
+      to: this.toDateValue
+    }
+    this.adminservice.getTreksByDate(this.postData).subscribe((responseData: any[]) => {
+      this.trekList = responseData;
+    })
+  }
+
+  editTrek(trek) {
     window.localStorage.removeItem("editTrekId");
-    window.localStorage.setItem("editTrekId", trek.ID.toString());
+    window.localStorage.setItem("editTrekId", trek.id.toString());
     this.router.navigate(['edittrek']);
   }
 }

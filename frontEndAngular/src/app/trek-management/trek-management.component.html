@@ -4,29 +4,20 @@
       <div class="row" style="margin-left: 1%;">
         <div class="col-md-3">
           <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Trek date" [(ngModel)]="dateValue"
-              (dateChange)="changeDate(dateValue)">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+            <input matInput [matDatepicker]="frompicker" placeholder="From date" [(ngModel)]="fromDateValue"
+              (dateChange)="changeFromDate(fromDateValue)">
+            <mat-datepicker-toggle matSuffix [for]="frompicker"></mat-datepicker-toggle>
+            <mat-datepicker #frompicker></mat-datepicker>
           </mat-form-field>
         </div>
         <div class="col-md-3">
           <mat-form-field>
-            <mat-label>Select</mat-label>
-            <mat-select [(value)]="selected">
-              <mat-option>None</mat-option>
-              <mat-option value="option1">Trek Name</mat-option>
-              <mat-option value="option2">City</mat-option>
-              <mat-option value="option3">Country</mat-option>
-            </mat-select>
+            <input matInput [matDatepicker]="topicker" placeholder="To date" [(ngModel)]="toDateValue"
+              (dateChange)="changeDate(toDateValue)">
+            <mat-datepicker-toggle matSuffix [for]="topicker"></mat-datepicker-toggle>
+            <mat-datepicker #topicker></mat-datepicker>
           </mat-form-field>
         </div>
-        <div class="col-md-3">
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="Enter your value">
-          </mat-form-field>
-        </div>
-        <button mat-raised-button type="submit" class="btn btn-info pull-right">Search</button>
         <button mat-raised-button type="submit" class="btn pull-right">Clear</button>
       </div>
     </div>
@@ -34,7 +25,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-info">
-            <h4 class="card-title ">Users</h4>
+            <h4 class="card-title ">Treks</h4>
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -68,7 +59,7 @@
                   <tr>
                     <td>
                       <div class="row">
-                        {{item.ID}}
+                        {{item.id}}
                         <!-- <div class="form-check col-md-4">
                           <label class="form-check-label">
                             <input class="form-check-input" type="checkbox" value="" checked>
@@ -77,13 +68,13 @@
                             </span>
                           </label>
                         </div>  -->
-                        <div class="col-md-4">                       
+                        <div class="col-md-4">
                           <a href="javascript: void(0)"><i (click)="editTrek(item)" class="material-icons">edit</i></a>
                         </div>
                       </div>
                     </td>
                     <td>{{item.post_title}}</td>
-                    <td>{{item.post_modified_gmt.substr(0,10)}}</td>
+                    <td>{{item.date}}</td>
                     <td>{{item.ticket}}</td>
                     <td>{{item.regularPrice}}</td>
                     <td>{{item.earlyBird}}</td>

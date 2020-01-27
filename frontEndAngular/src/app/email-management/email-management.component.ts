@@ -5,6 +5,7 @@ import { Observable, empty } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Key, element } from 'protractor';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { DateAdapter, NativeDateAdapter } from '@angular/material';
 declare var $: any;
 
 @Component({
@@ -105,9 +106,12 @@ export class EmailManagementComponent implements OnInit {
   trekImageUrl = "";
   fileData = "";
 
-  constructor(private adminservice: AdminserviceService) { }
+  constructor(private adminservice: AdminserviceService, dateAdapter: DateAdapter<NativeDateAdapter>) {
+    //dateAdapter.setLocale('de-DE');
+  }
 
   ngOnInit() {
+
     this.adminservice.getTrekLeaders().subscribe((responseData: any[]) => {
       this.options = responseData;
       this.filteredOptions = this.myControl.valueChanges
@@ -349,6 +353,7 @@ export class EmailManagementComponent implements OnInit {
     this.selectFilter = '';
     this.searchValue = '';
     this.toDateValue = new Date('');
+    this.fromDateValue = new Date('');
     this.users = [];
     this.postData = {
       offset: this.pageIndex,
@@ -373,9 +378,7 @@ export class EmailManagementComponent implements OnInit {
   //   this.callUserApi(this.postData);
   // }
 
-  changeDate(eventDate) {
-    this.toDateValue.setDate(eventDate.getDate() + 1);
-    this.fromDateValue.setDate(eventDate.getDate() + 1);
+  changeDate(eventDate) {  
     this.postData = {
       from: this.fromDateValue,
       to: this.toDateValue
@@ -393,9 +396,9 @@ export class EmailManagementComponent implements OnInit {
   }
 
   changeFromDate(eventDate) {
-    this.fromDateValue.setDate(eventDate.getDate() + 1);
     this.postData = {
-      from: this.fromDateValue
+      from: this.fromDateValue,
+      to: this.toDateValue
     }
     this.adminservice.getTreksByDate(this.postData).subscribe((responseData: any[]) => {
       this.trekOptions = responseData;
