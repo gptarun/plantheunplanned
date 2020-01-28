@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="card">
       <div class="row" style="margin-left: 1%;">
-        <div class="col-md-3">
+        <div class="col-md-2">
           <mat-form-field>
             <input matInput [matDatepicker]="frompicker" placeholder="From date" [(ngModel)]="fromDateValue"
               (dateChange)="changeFromDate(fromDateValue)">
@@ -10,7 +10,7 @@
             <mat-datepicker #frompicker></mat-datepicker>
           </mat-form-field>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
           <mat-form-field>
             <input matInput [matDatepicker]="topicker" placeholder="To date" [(ngModel)]="toDateValue"
               (dateChange)="changeDate(toDateValue)">
@@ -18,7 +18,7 @@
             <mat-datepicker #topicker></mat-datepicker>
           </mat-form-field>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-6">
           <mat-form-field class="example-full-width">
             <input type="text" placeholder="Select Trek " aria-label="Select Treks" matInput [(ngModel)]="trekValue"
               [formControl]="myTrekControl" [matAutocomplete]="auto1">

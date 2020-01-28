@@ -147,13 +147,30 @@ class Homemodel extends CI_Model
     {
         return $this->db->select('*')->from('wp_postmeta')->where("post_id = $productId")->get()->result_array();
     }
-    public function getTrekPaidCustomer()
-    {
-        return $this->db->select('*')->from('wp_posts')->where("post_status = 'wc-completed'")->get()->result_array();
-    }
+    // public function getTrekPaidCustomer($productId)
+    // {
+
+    //     $query = "select id,post_status FROM ptudev.wp_posts where ID in 
+    //     (SELECT distinct(post_id) FROM ptudev.wp_postmeta where  post_id IN(select order_id FROM ptudev.wp_woocommerce_order_items where order_item_id in
+    //     (SELECT order_item_id FROM ptudev.wp_woocommerce_order_itemmeta where  meta_value =$productId))) AND post_status = 'wc-completed'";
+
+    //     $result = $this->db->query($query);
+
+    //     return $result->result_array();
+    // }
+    // public function getBillingInfo($productId)
+    // {
+    //     $query = "SELECT * FROM wp_postmeta where post_id in(select order_id FROM wp_woocommerce_order_items where order_item_id in(SELECT order_item_id FROM wp_woocommerce_order_itemmeta where  meta_value =$productId))";
+    //     $result = $this->db->query($query);
+
+    //     return $result->result_array();
+    // }
     public function getBillingInfo($productId)
     {
-        $query = "SELECT * FROM wp_postmeta where post_id in(select order_id FROM wp_woocommerce_order_items where order_item_id in(SELECT order_item_id FROM wp_woocommerce_order_itemmeta where  meta_value =$productId))";
+        $query = "select p.ID, p.post_status, pm.meta_key, pm.meta_value from wp_posts p JOIN wp_postmeta pm where p.ID = pm.post_id AND 
+        post_id IN (select order_id FROM ptudev.wp_woocommerce_order_items where order_item_id in
+        (SELECT order_item_id FROM ptudev.wp_woocommerce_order_itemmeta where  meta_value =$productId)) 
+        AND post_status = 'wc-completed'";
         $result = $this->db->query($query);
 
         return $result->result_array();
