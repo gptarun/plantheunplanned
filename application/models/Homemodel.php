@@ -147,6 +147,10 @@ class Homemodel extends CI_Model
     {
         return $this->db->select('*')->from('wp_postmeta')->where("post_id = $productId")->get()->result_array();
     }
+    public function getTrekPaidCustomer()
+    {
+        return $this->db->select('*')->from('wp_posts')->where("post_status = 'wc-completed'")->get()->result_array();
+    }
     public function getBillingInfo($productId)
     {
         $query = "SELECT * FROM wp_postmeta where post_id in(select order_id FROM wp_woocommerce_order_items where order_item_id in(SELECT order_item_id FROM wp_woocommerce_order_itemmeta where  meta_value =$productId))";

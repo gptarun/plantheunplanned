@@ -368,11 +368,12 @@ class Home extends CI_Controller
         } else {
             $fromDate = time();
         }
-
+$arr = array();
+$arr1 = array();
         $trekInfo = $this->homemodel->getTrekInfo($productId);
-        $this->homemodel->getBillingInfo($productId);
-        foreach ($trekInfo as $value) {
+               foreach ($trekInfo as $value) {
             if ($value['meta_key'] == 'tour_booking_periods') {
+                
                 foreach (unserialize($value['meta_value']) as $newFields) {
                     $dbExactDate = strtotime($newFields['exact_dates'][0]);
                     if ($fromDate == $dbExactDate) {
@@ -381,9 +382,20 @@ class Home extends CI_Controller
                 }
             }
         }
-        array_push($responseObject, $this->homemodel->getBillingInfo($productId));
-        echo json_encode($responseObject);
+      
+     //get billing info of customer whose payment is done   
+    $billingInfo = $this->homemodel->getBillingInfo($productId);
+    $trekPaidCustomer = $this->homemodel->getTrekPaidCustomer();
+
+    foreach($trekPaidCustomer as $value1){
+      foreach($billingInfo as $value){
+        if($value1['ID'] == $value['post_id']){
+          array_push($responseObject, $value);
+          echo json_encode($responseObject);
+          }
+       }
     }
+}
 
     public function getEmailTemplates()
     {
