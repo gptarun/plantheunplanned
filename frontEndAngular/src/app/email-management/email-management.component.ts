@@ -156,7 +156,7 @@ export class EmailManagementComponent implements OnInit {
     console.log(ID, exactDate);
     this.adminservice.getBillingInfo(ID, exactDate).subscribe((responseData: any[]) => {
       this.trekDate = exactDate;
-      responseData[0].forEach((element, index) => {
+      responseData.forEach((element, index) => {
 
         if (element.meta_key == "_billing_first_name" || element.meta_key == "_billing_last_name" || element.meta_key == "_billing_email"
           || element.meta_key == "_billing_phone") {
