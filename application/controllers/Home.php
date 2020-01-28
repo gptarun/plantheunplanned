@@ -363,8 +363,8 @@ class Home extends CI_Controller
         $productId = $post['id'];
         if (isset($post["exactDate"])) {
             $fromDate = $post["exactDate"];
-            $fromDate = substr($fromDate, 0, 10);
-            $fromDate = strtotime($fromDate);
+            // $fromDate = substr($fromDate, 0, 10);
+            // $fromDate = strtotime($fromDate);
         } else {
             $fromDate = time();
         }
@@ -382,7 +382,15 @@ class Home extends CI_Controller
         // }
 
         //get billing info of customer whose payment is done   
-        $billingInfo = $this->homemodel->getBillingInfo($productId);
+        // $billingInfo = $this->homemodel->getBillingInfo($productId);
+        $getOrderMetaId = $this->homemodel->getOrderMetaId($fromDate);
+        $listOrderItem = array();
+        foreach ($getOrderMetaId as $value) {
+            if($value['meta_key'] == '_product_id'){
+            $listOrderItem[] = $value['order_item_id'];
+           }
+        }
+        $billingInfo = $this->homemodel->getBillingInfo($productId,$listOrderItem);
     
         //$trekPaidCustomer = $this->homemodel->getTrekPaidCustomer($productId);
       

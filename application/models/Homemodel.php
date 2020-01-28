@@ -165,11 +165,26 @@ class Homemodel extends CI_Model
 
     //     return $result->result_array();
     // }
-    public function getBillingInfo($productId)
+    public function getOrderMetaId($fromDate)
+     {
+       $query = "SELECT * FROM wp_woocommerce_order_itemmeta where order_item_id in( SELECT order_item_id FROM wp_woocommerce_order_itemmeta where meta_value = $fromDate)";
+
+       $result = $this->db->query($query);
+
+       return $result->result_array();
+    }
+
+    public function getBillingInfo($productId,$listOrderItem)
     {
+         $idQueryList = '';
+        foreach ($listOrderItem as $values) {
+            $idQueryList = $idQueryList . "'" . $values . "',";
+        }
+        $idQueryList = rtrim($idQueryList, ',');
+
         $query = "select p.ID, p.post_status, pm.meta_key, pm.meta_value from wp_posts p JOIN wp_postmeta pm where p.ID = pm.post_id AND 
         post_id IN (select order_id FROM wp_woocommerce_order_items where order_item_id in
-        (SELECT order_item_id FROM wp_woocommerce_order_itemmeta where  meta_value =$productId)) 
+        ($idQueryList)) 
         AND post_status = 'wc-completed'";        
 
         $result = $this->db->query($query);
