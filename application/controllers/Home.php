@@ -389,7 +389,34 @@ class Home extends CI_Controller
                 $listOrderItem[] = $value['order_item_id'];
             }
         }
+        // $billingInfo = array();
+
         $billingInfo = $this->homemodel->getBillingInfo($productId, $listOrderItem);
+        // $billingInfo[0]['boarding'] = 'hello'; 
+        // get boarding point
+        // $getBoardingPoint = array();
+        // $oVal = (object)[];
+        // $oValvar1 = "something"; // PHP creates  a Warning here
+        // $oVal->key1->var2 = "something else";
+
+        foreach ($getOrderMetaId as $value) {
+            foreach ($billingInfo as $key1 => $value1) {
+                if ($value['meta_key'] == '_product_id' && $value['meta_key'] == 'Boarding Point') {
+                    if($value['meta_value'] != ''){
+                         $getBoardingPoint = $value['meta_value'];
+                         $billingInfo[$key1]['boarding_point'] = $getBoardingPoint; 
+                      }else{
+                        $getBoardingPoint = 'NA';
+                        $billingInfo[$key1]['boarding_point'] = $getBoardingPoint;
+                    }
+                }
+            }  
+        }
+
+                // foreach ($listOrderItem as $value) {
+        //     $billingInfo['meta_key'] = $getBoardingPoint;
+        // }
+        // print_r($billingInfo);
 
         //Need logic to add boarding point in the above $billingInfo array.
         //if exists then add it and if not then just set "NA"

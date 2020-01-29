@@ -175,7 +175,7 @@ class Homemodel extends CI_Model
         post_id IN (select order_id FROM wp_woocommerce_order_items where order_item_id in
         ($idQueryList)) 
         AND post_status = 'wc-completed'";        
-
+  // $query = "select p.ID, p.post_status, pm.meta_key, pm.meta_value from wp_posts";
         $result = $this->db->query($query);
 
         return $result->result_array();
