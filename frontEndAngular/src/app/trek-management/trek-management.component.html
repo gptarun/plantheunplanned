@@ -55,30 +55,22 @@
                   <th>Insurance</th>
                   <th>Plant Tree</th>
                 </thead>
-                <tbody *ngFor="let item of trekList">
+                <tbody *ngFor="let item of treks">
                   <tr>
                     <td>
                       <div class="row">
-                        {{item.id}}
-                        <!-- <div class="form-check col-md-4">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked>
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>  -->
+                        <div class="col-md-8">{{item.ID}}</div>                       
                         <div class="col-md-4">
                           <a href="javascript: void(0)"><i (click)="editTrek(item)" class="material-icons">edit</i></a>
                         </div>
                       </div>
                     </td>
-                    <td>{{item.post_title}}</td>
+                    <td>{{item.name}}</td>
                     <td>{{item.date}}</td>
-                    <td>{{item.ticket}}</td>
-                    <td>{{item.regularPrice}}</td>
-                    <td>{{item.earlyBird}}</td>
-                    <td>{{item.dynamicPrice}}</td>
+                    <td>{{item.total_sales}}</td>
+                    <td>{{item._regular_price}}</td>
+                    <td>{{item._sale_price}}</td>
+                    <td>{{item._price}}</td>
                     <td>{{item.insurance}}</td>
                     <td>{{item.plantTree}}</td>
                   </tr>

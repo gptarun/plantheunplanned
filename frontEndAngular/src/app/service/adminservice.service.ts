@@ -91,6 +91,9 @@ export class AdminserviceService {
   getTreksByDate(data) {
     return this.http.post(environment.apiTarget + `/home/getBookingTreks`, data);
   }
+  getManageTreks(data){
+    return this.http.post(environment.apiTarget + `/home/getManageTreks`, data);
+  }
   getEmailTemplates() {
     return this.http.get(environment.apiTarget + `/home/getEmailTemplates`);
   }

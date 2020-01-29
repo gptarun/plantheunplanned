@@ -120,17 +120,6 @@ class Homemodel extends CI_Model
             $idQueryList = $idQueryList . "'" . $values . "',";
         }
         $idQueryList = rtrim($idQueryList, ',');
-        return $this->db->select('*')->from('wp_postmeta')->where("post_id IN( $idQueryList )")->get()->result_array();
-
-
-        $idQueryList = '';
-        foreach ($trekIDList as $values) {
-            $idQueryList = $idQueryList . "'" . $values . "',";
-        }
-        $idQueryList = rtrim($idQueryList, ',');
-
-        echo $query = "SELECT * FROM `wp_postmeta` where meta_value != '' and meta_key = 'tour_booking_periods' and meta_key = 'name' and post_id in (10050)";
-        die();
 
         return $this->db->select('*')->from('wp_postmeta')->where("post_id IN( $idQueryList )")->get()->result_array();
     }

@@ -19,7 +19,10 @@ import { AdduserComponent } from '../../user-management/adduser/adduser.componen
 import { EdituserComponent } from '../../user-management/edituser/edituser.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-
+import { EditTrekComponent } from 'app/trek-management/edit-trek/edit-trek.component';
+import { ImportComponent } from 'app/import/import.component';
+import { AddimportComponent } from 'app/import/addimport/addimport.component';
+import { OrderManagementComponent } from 'app/order-management/order-management.component';
 import {
   MatButtonModule,
   MatInputModule,
@@ -34,9 +37,7 @@ import {
   MatDialogModule,
   MatIconModule
 } from '@angular/material';
-import { EditTrekComponent } from 'app/trek-management/edit-trek/edit-trek.component';
-import { ImportComponent } from 'app/import/import.component';
-import { AddimportComponent } from 'app/import/addimport/addimport.component';
+
 
 @NgModule({
   imports: [
@@ -80,7 +81,8 @@ import { AddimportComponent } from 'app/import/addimport/addimport.component';
     DeleteDialog,
     EditTrekComponent,
     ImportComponent,
-    AddimportComponent
+    AddimportComponent,
+    OrderManagementComponent
   ],
   entryComponents: [DeleteDialog],
 })

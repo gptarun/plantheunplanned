@@ -155,7 +155,7 @@ export class EmailManagementComponent implements OnInit {
     this.users = [];
     console.log(ID, exactDate);
     this.adminservice.getBillingInfo(ID, exactDate).subscribe((responseData: any[]) => {
-      this.trekDate = exactDate;
+      this.trekDate = exactDate;     
       responseData.forEach((element, index) => {
 
         if (element.meta_key == "_billing_first_name" || element.meta_key == "_billing_last_name" || element.meta_key == "_billing_email"
@@ -378,7 +378,7 @@ export class EmailManagementComponent implements OnInit {
   //   this.callUserApi(this.postData);
   // }
 
-  changeDate(eventDate) {  
+  changeDate(eventDate) {
     this.postData = {
       from: this.fromDateValue,
       to: this.toDateValue

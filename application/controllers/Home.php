@@ -382,19 +382,57 @@ class Home extends CI_Controller
         // }
 
         //get billing info of customer whose payment is done   
-        // $billingInfo = $this->homemodel->getBillingInfo($productId);
         $getOrderMetaId = $this->homemodel->getOrderMetaId($fromDate);
         $listOrderItem = array();
         foreach ($getOrderMetaId as $value) {
-            if($value['meta_key'] == '_product_id'){
-            $listOrderItem[] = $value['order_item_id'];
-           }
+            if ($value['meta_key'] == '_product_id') {
+                $listOrderItem[] = $value['order_item_id'];
+            }
         }
-        $billingInfo = $this->homemodel->getBillingInfo($productId,$listOrderItem);
-    
-        //$trekPaidCustomer = $this->homemodel->getTrekPaidCustomer($productId);
-      
+        $billingInfo = $this->homemodel->getBillingInfo($productId, $listOrderItem);
+
+        //Need logic to add boarding point in the above $billingInfo array.
+        //if exists then add it and if not then just set "NA"
+
         echo json_encode($billingInfo);
+    }
+
+    // TREK MANAGEMENT HERE
+    public function getManageTreks()
+    {
+        $post = json_decode(file_get_contents("php://input"), true);
+
+
+        if (isset($post["from"])) {
+            $fromDate = $post["from"];
+            $fromDate = substr($fromDate, 0, 10);
+            $fromDate = strtotime($fromDate);
+        } else {
+            $fromDate = 0;
+        }
+        if (isset($post["to"])) {
+            $toDate = $post["to"];
+            $toDate = substr($toDate, 0, 10);
+            $toDate = strtotime($toDate);
+        } else {
+            $toDate = 0;
+        }
+
+        //stores all the post_id which exists between from and to
+        $trekIDList = [];
+        $result = $this->homemodel->getBookingTreks();
+        foreach ($result as $value) {
+            foreach (unserialize($value['meta_value']) as $newFields) {
+                $dbFrom = strtotime($newFields['from']);
+                $dbTo = strtotime($newFields['to']);
+                if ($fromDate <= $dbTo && $toDate >= $dbFrom) {
+                    array_push($trekIDList, $value['post_id']);
+                }
+            }
+        }
+
+        $mangeTrekList = $this->homemodel->getBookingTreksName($trekIDList);
+        echo json_encode($mangeTrekList);
     }
 
     public function getEmailTemplates()
@@ -405,13 +443,7 @@ class Home extends CI_Controller
 
     public function send_email()
     {
-
-        // $this->email->from($from_email, 'shraddhaprinters');
-        // $this->email->to('rishabh virani here');
-        // $this->email->subject('Mail permo dharm');
-        // $this->email->message('Jai ram ji ki');
-
-        //Send mail 
+        //Send mail - not in use, shifted to email controller.
         return $this->email->send();
     }
 
