@@ -398,29 +398,46 @@ class Home extends CI_Controller
         // $oVal = (object)[];
         // $oValvar1 = "something"; // PHP creates  a Warning here
         // $oVal->key1->var2 = "something else";
-
-        foreach ($getOrderMetaId as $value) {
-            foreach ($billingInfo as $key1 => $value1) {
-                if ($value['meta_key'] == '_product_id' && $value['meta_key'] == 'Boarding Point') {
-                    if($value['meta_value'] != ''){
-                         $getBoardingPoint = $value['meta_value'];
-                         $billingInfo[$key1]['boarding_point'] = $getBoardingPoint; 
-                      }else{
+        $id = '';
+        $boardingPointObject = new stdClass();
+        $count = 0;
+        //working on logic
+        // boardingPointObject object will have id, BP as Meta key and MV if not exists then NA
+    
+        foreach ($getOrderMetaId as $key => $value) {
+            if ($id == '') {
+                $id =  $value['order_item_id'];
+                $boardingPointObject->order_item_id = $value['order_item_id'];
+            } else {
+                if ($id != $value['order_item_id']) {
+                    if ($count == 0) {
                         $getBoardingPoint = 'NA';
-                        $billingInfo[$key1]['boarding_point'] = $getBoardingPoint;
+                        $boardingPointObject->boarding_point = $getBoardingPoint;
                     }
+                    array_push($billingInfo, $boardingPointObject);
+                    //array_splice($billingInfo, $key, 0, $boardingPointObject);
+                    $id =  $value['order_item_id'];
+                    $boardingPointObject = new stdClass();
+                    $count = 0;
+                    $boardingPointObject->order_item_id = $value['order_item_id'];
                 }
-            }  
+            }
+            if ($value['meta_key'] == '_product_id' && $value['meta_key'] == 'Boarding Point') {
+                if ($value['meta_value'] != '') {
+                    $count++;
+                    $boardingPointObject->boarding_point = $value['meta_value'];
+                }
+            }
+
+            //echo json_encode($value['meta_id']);
+
+            if ($value['meta_id'] == end($getOrderMetaId)['meta_id']) {
+                $getBoardingPoint = 'NA';
+                $boardingPointObject->boarding_point = $getBoardingPoint;
+                array_push($billingInfo, $boardingPointObject);
+                //array_splice($billingInfo, $key, 0, $boardingPointObject);
+            }
         }
-
-                // foreach ($listOrderItem as $value) {
-        //     $billingInfo['meta_key'] = $getBoardingPoint;
-        // }
-        // print_r($billingInfo);
-
-        //Need logic to add boarding point in the above $billingInfo array.
-        //if exists then add it and if not then just set "NA"
-
         echo json_encode($billingInfo);
     }
 
