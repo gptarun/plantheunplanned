@@ -392,6 +392,7 @@ class Home extends CI_Controller
         // $billingInfo = array();
 
         $billingInfo = $this->homemodel->getBillingInfo($productId, $listOrderItem);
+    
         // $billingInfo[0]['boarding'] = 'hello'; 
         // get boarding point
         // $getBoardingPoint = array();
@@ -403,42 +404,68 @@ class Home extends CI_Controller
         $count = 0;
         //working on logic
         // boardingPointObject object will have id, BP as Meta key and MV if not exists then NA
-    
-        foreach ($getOrderMetaId as $key => $value) {
-            if ($id == '') {
-                $id =  $value['order_item_id'];
-                $boardingPointObject->order_item_id = $value['order_item_id'];
-            } else {
-                if ($id != $value['order_item_id']) {
-                    if ($count == 0) {
+
+        // --------------------------------------new code starts here-----------------------------------------------------------------
+        $getBoardingPointsql = $this->homemodel->getBoardingPoint();
+        $boarding_Point_Text = "boarding_point";
+        foreach ($billingInfo as $key => $value) {
+            foreach ($getBoardingPointsql as $value1) {
+                //blank and id check
+            if ($id == '' || $id =  $value['ID']) {
+                $id =  $value['ID'];
+                if($value['ID'] == $value1['order_id'] && $value1['meta_key'] == '_product_id' && $value1['meta_key'] == 'Boarding Point'){
+                    
+                    $boardingPointObject->ID = $value['ID'];  
+                    $boardingPointObject->meta_key = $value1['meta_key'];
+                    $boardingPointObject->meta_value = $value1['meta_value'];
+                     array_push($billingInfo, $boardingPointObject);
+                }else{
+                    //we have to remove below condition and we show boarding point object only when it's available 
+                    if($count == 0){
                         $getBoardingPoint = 'NA';
-                        $boardingPointObject->boarding_point = $getBoardingPoint;
+                        $boardingPointObject->ID = $value['ID'];
+                        $boardingPointObject->meta_key = $boarding_Point_Text;
+                        $boardingPointObject->meta_value = $getBoardingPoint;
+                         array_push($billingInfo, $boardingPointObject);
+                         $count++;
                     }
-                    array_push($billingInfo, $boardingPointObject);
+                }
+            } else {
+                if ($id != $value['ID']) {
+                    $id = '';
                     //array_splice($billingInfo, $key, 0, $boardingPointObject);
-                    $id =  $value['order_item_id'];
-                    $boardingPointObject = new stdClass();
-                    $count = 0;
-                    $boardingPointObject->order_item_id = $value['order_item_id'];
                 }
-            }
-            if ($value['meta_key'] == '_product_id' && $value['meta_key'] == 'Boarding Point') {
-                if ($value['meta_value'] != '') {
-                    $count++;
-                    $boardingPointObject->boarding_point = $value['meta_value'];
-                }
-            }
-
-            //echo json_encode($value['meta_id']);
-
-            if ($value['meta_id'] == end($getOrderMetaId)['meta_id']) {
-                $getBoardingPoint = 'NA';
-                $boardingPointObject->boarding_point = $getBoardingPoint;
-                array_push($billingInfo, $boardingPointObject);
-                //array_splice($billingInfo, $key, 0, $boardingPointObject);
             }
         }
-        echo json_encode($billingInfo);
+    }
+        
+//-------------------------------------------new code ends here-------------------------------------------------------------------
+
+    //      foreach ($getBoardingPointsql as $value1) {
+
+    //       if($value['ID'] == $value1['order_id'] && $count == 0){
+    //       if ($value1['meta_key'] == '_product_id' && $value1['meta_key'] == 'Boarding Point') {
+    //             if ($value['meta_value'] != '') {
+    //                 $boardingPointObject->meta_key = $boarding_Point_Text;
+    //                 $boardingPointObject->meta_value = $value1['meta_value'];
+    //             }
+    //         }
+    //         //echo json_encode($value['meta_id']);
+       
+    //         if ($value1['meta_id'] == end($getOrderMetaId)['meta_id']) {
+    //             $getBoardingPoint = 'NA';
+    //             $boardingPointObject->meta_key = $boarding_Point_Text;
+    //             $boardingPointObject->meta_value = $getBoardingPoint;
+    //             array_push($billingInfo, $boardingPointObject);
+    //             //array_splice($billingInfo, $key, 0, $boardingPointObject);
+    //         }
+    //       }
+           
+    //     }
+    //      $count++;
+    // }
+   
+           echo json_encode($billingInfo);
     }
 
     // TREK MANAGEMENT HERE

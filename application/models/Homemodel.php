@@ -163,6 +163,15 @@ class Homemodel extends CI_Model
        return $result->result_array();
     }
 
+    public function getBoardingPoint()
+     {
+       $query = "SELECT order_id,meta_id,meta_key,meta_value FROM wp_woocommerce_order_itemmeta inner join wp_woocommerce_order_items on wp_woocommerce_order_itemmeta.order_item_id =  wp_woocommerce_order_items.order_item_id";
+
+       $result = $this->db->query($query);
+
+       return $result->result_array();
+    }
+
     public function getBillingInfo($productId,$listOrderItem)
     {
          $idQueryList = '';
